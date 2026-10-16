@@ -1,0 +1,10 @@
+import kotlin.Boolean;
+
+CREATE TABLE reading_activity (
+    local_day INTEGER NOT NULL,
+    chapter_id INTEGER NOT NULL,
+    duration_millis INTEGER NOT NULL DEFAULT 0,
+    completed INTEGER AS Boolean NOT NULL DEFAULT 0,
+    -- No foreign key: measured time must survive a source re-keying or removing its chapters.
+    PRIMARY KEY (local_day, chapter_id)
+);

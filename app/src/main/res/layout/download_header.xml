@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eu.kanade.tachiyomi.ui.download.InkDragCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="12dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:textAllCaps="true"
+            android:textColor="@color/mangalka_text_secondary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="Manga title (3)" />
+
+        <ImageView
+            android:id="@+id/reorder"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:padding="10dp"
+            android:scaleType="center"
+            app:srcCompat="@drawable/ic_drag_handle_24dp"
+            app:tint="@color/mangalka_text_secondary"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+
+</eu.kanade.tachiyomi.ui.download.InkDragCardView>

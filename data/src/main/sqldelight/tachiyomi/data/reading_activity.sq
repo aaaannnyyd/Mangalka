@@ -1,0 +1,59 @@
+import kotlin.Boolean;
+
+CREATE TABLE reading_activity (
+    local_day INTEGER NOT NULL,
+    chapter_id INTEGER NOT NULL,
+    duration_millis INTEGER NOT NULL DEFAULT 0,
+    completed INTEGER AS Boolean NOT NULL DEFAULT 0,
+    -- No foreign key: measured time must survive a source re-keying or removing its chapters.
+    PRIMARY KEY (local_day, chapter_id)
+);
+
+record:
+INSERT INTO reading_activity(local_day, chapter_id, duration_millis, completed)
+VALUES (:localDay, :chapterId, :durationMillis, :completed)
+ON CONFLICT(local_day, chapter_id) DO UPDATE SET
+    duration_millis = duration_millis + :durationMillis,
+    completed = completed OR :completed;
+
+-- A chapter finished on several days of the range counts once, on the first of them,
+-- so the daily numbers always add up to getCompletedChapterCount.
+getDays:
+WITH firsts AS (
+    SELECT chapter_id, MIN(local_day) AS first_day
+    FROM reading_activity
+    WHERE completed = 1 AND local_day >= :fromDay AND local_day < :untilDay
+    GROUP BY chapter_id
+)
+SELECT
+    R.local_day,
+    SUM(R.duration_millis) AS duration,
+    (SELECT COUNT(*) FROM firsts F WHERE F.first_day = R.local_day) AS chapters
+FROM reading_activity R
+WHERE R.local_day >= :fromDay AND R.local_day < :untilDay
+GROUP BY R.local_day
+ORDER BY R.local_day;
+
+getCompletedChapterCount:
+SELECT COUNT(DISTINCT chapter_id)
+FROM reading_activity
+WHERE completed = 1 AND local_day >= :fromDay AND local_day < :untilDay;
+
+getFirstRecordedDay:
+SELECT MIN(local_day) FROM reading_activity;
+
+export:
+SELECT M.source, M.url, C.url, R.local_day, R.duration_millis, R.completed
+FROM reading_activity R
+JOIN chapters C ON C._id = R.chapter_id
+JOIN mangas M ON M._id = C.manga_id;
+
+restore:
+INSERT INTO reading_activity(local_day, chapter_id, duration_millis, completed)
+SELECT :localDay, C._id, :durationMillis, :completed
+FROM chapters C
+JOIN mangas M ON M._id = C.manga_id
+WHERE M.source = :sourceId AND M.url = :mangaUrl AND C.url = :chapterUrl
+ON CONFLICT(local_day, chapter_id) DO UPDATE SET
+    duration_millis = MAX(duration_millis, excluded.duration_millis),
+    completed = completed OR excluded.completed;

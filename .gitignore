@@ -1,0 +1,26 @@
+# Build files
+.gradle
+.gradle-user-home
+.android-user-home
+.gradle-build.*.log
+.kotlin
+build
+
+# IDE files
+*.iml
+.idea/*
+!.idea/icon.svg
+/captures
+
+# Configuration files
+keystore.properties
+local.properties
+
+# macOS specific files
+.DS_Store
+
+# Local release artifacts and scratch work (APKs, decompiled extensions, tool downloads)
+releases/*.apk
+work/*
+!work/tg-release.ps1
+!work/caption-*.txt
