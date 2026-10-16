@@ -35,7 +35,8 @@ class GetPinnedSourceRecommendations(
 
     suspend fun await(forceRefresh: Boolean = false): List<PinnedSourceRecommendation> = cacheMutex.withLock {
         val pinned = getEnabledSources.subscribe().first()
-            .filter { Pin.Actual in it.pin }
+            // The "last used" duplicate has its pin flags flipped (Pins.minus is xor), so it is not a pin.
+            .filter { !it.isUsedLast && Pin.Actual in it.pin }
             .distinctBy { it.id }
         val sourceIds = pinned.mapTo(linkedSetOf()) { it.id }
         val now = Clock.System.now().toEpochMilliseconds()

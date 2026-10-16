@@ -184,7 +184,11 @@ fun TrackDateSelector(
             prominent = true,
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(InkGlassTokens.Space16)) {
-                Text("ТРЕКИНГ", style = InkTypography.Eyebrow, color = InkGlassTokens.Accent)
+                Text(
+                    stringResource(MR.strings.ml_g3_tracking_eyebrow),
+                    style = InkTypography.Eyebrow,
+                    color = InkGlassTokens.Accent,
+                )
                 Text(title, style = InkTypography.Title, color = InkGlassTokens.TextPrimary)
 
                 DatePicker(
@@ -248,7 +252,11 @@ private fun BaseSelector(
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(InkGlassTokens.Space16)) {
                 Column(verticalArrangement = Arrangement.spacedBy(InkGlassTokens.Space4)) {
-                    Text("ТРЕКИНГ", style = InkTypography.Eyebrow, color = InkGlassTokens.Accent)
+                    Text(
+                        stringResource(MR.strings.ml_g3_tracking_eyebrow),
+                        style = InkTypography.Eyebrow,
+                        color = InkGlassTokens.Accent,
+                    )
                     Text(title, style = InkTypography.Headline, color = InkGlassTokens.TextPrimary)
                 }
                 Box(

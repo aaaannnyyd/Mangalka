@@ -129,7 +129,7 @@ object DownloadQueueScreen : Screen() {
                                 Box {
                                     InkGlassIconButton(
                                         imageVector = Icons.Outlined.MoreVert,
-                                        contentDescription = "Ещё",
+                                        contentDescription = stringResource(MR.strings.ml_g1_action_more),
                                         onClick = { moreExpanded = true },
                                     )
                                     InkGlassDropdownMenu(
@@ -166,8 +166,8 @@ object DownloadQueueScreen : Screen() {
             ) { contentPadding ->
                 if (downloadList.isEmpty()) {
                     InkEmptyState(
-                        title = "Очередь пуста",
-                        message = "Загруженные главы и активные скачивания появятся здесь.",
+                        title = stringResource(MR.strings.ml_g1_download_queue_empty),
+                        message = stringResource(MR.strings.ml_g1_download_queue_empty_hint),
                         modifier = Modifier
                             .padding(contentPadding)
                             .padding(InkGlassTokens.Space20),

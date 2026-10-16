@@ -61,7 +61,7 @@ fun ChapterHeader(
                 verticalArrangement = Arrangement.spacedBy(InkGlassTokens.Space4),
             ) {
                 Text(
-                    text = "ГЛАВЫ",
+                    text = stringResource(MR.strings.ml_g4_chapters_eyebrow),
                     style = InkTypography.Eyebrow,
                     color = InkGlassTokens.Accent,
                 )

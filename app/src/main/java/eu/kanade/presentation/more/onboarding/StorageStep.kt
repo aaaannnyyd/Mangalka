@@ -43,22 +43,22 @@ internal class StorageStep : OnboardingStep {
             verticalArrangement = Arrangement.spacedBy(InkGlassTokens.Space16),
         ) {
             Text(
-                "Куда сохранять мангу?",
+                stringResource(MR.strings.ml_g4_onboarding_storage_title),
                 style = InkTypography.Title,
                 color = InkGlassTokens.TextPrimary,
             )
             Text(
-                "Выберите отдельную папку для глав, резервных копий и кэша.",
+                stringResource(MR.strings.ml_g4_onboarding_storage_summary),
                 style = InkTypography.Body,
                 color = InkGlassTokens.TextSecondary,
             )
             Text(
-                "Сейчас: $selected",
+                stringResource(MR.strings.ml_g4_onboarding_storage_current, selected),
                 style = InkTypography.BodySmall,
                 color = if (_isComplete) InkGlassTokens.TextSecondary else InkGlassTokens.TextTertiary,
             )
             InkAccentButton(
-                label = "Выбрать папку",
+                label = stringResource(MR.strings.ml_g4_onboarding_storage_pick),
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     try {
@@ -69,7 +69,7 @@ internal class StorageStep : OnboardingStep {
                 },
             )
             Text(
-                "Можно изменить позже в разделе «Ещё → Данные и хранилище».",
+                stringResource(MR.strings.ml_g4_onboarding_storage_later),
                 style = InkTypography.BodySmall,
                 color = InkGlassTokens.TextTertiary,
             )

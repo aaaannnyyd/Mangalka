@@ -89,8 +89,16 @@ fun ReaderSettingsDialog(
                 modifier = Modifier.padding(horizontal = InkGlassTokens.Space20),
                 verticalArrangement = Arrangement.spacedBy(InkGlassTokens.Space12),
             ) {
-                Text("РИДЕР", style = InkTypography.Eyebrow, color = InkGlassTokens.Accent)
-                Text("Настройки чтения", style = InkTypography.Headline, color = InkGlassTokens.TextPrimary)
+                Text(
+                    stringResource(MR.strings.ml_g4_reader_eyebrow),
+                    style = InkTypography.Eyebrow,
+                    color = InkGlassTokens.Accent,
+                )
+                Text(
+                    stringResource(MR.strings.ml_g4_reader_settings_title),
+                    style = InkTypography.Headline,
+                    color = InkGlassTokens.TextPrimary,
+                )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(InkGlassTokens.Space8),

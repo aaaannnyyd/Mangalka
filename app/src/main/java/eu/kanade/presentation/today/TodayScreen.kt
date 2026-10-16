@@ -41,6 +41,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import eu.kanade.presentation.manga.components.MangaCover
+import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.InkAccentButton
 import tachiyomi.presentation.core.components.InkEmptyState
 import tachiyomi.presentation.core.components.InkErrorState
@@ -54,6 +55,7 @@ import tachiyomi.presentation.core.components.InkMangaBackdrop
 import tachiyomi.presentation.core.components.InkMangaCard
 import tachiyomi.presentation.core.components.InkSectionHeader
 import tachiyomi.presentation.core.components.InkTypography
+import tachiyomi.presentation.core.i18n.stringResource
 
 data class TodayHeroUiModel(
     val mangaId: Long,
@@ -143,7 +145,7 @@ fun TodayScreenContent(
         if (state.recommendations.isNotEmpty()) {
             item(key = "recommendations_header") {
                 InkSectionHeader(
-                    title = "Из закреплённых источников",
+                    title = stringResource(MR.strings.ml_g4_today_pinned_sources),
                     modifier = Modifier.padding(horizontal = InkGlassTokens.ScreenHorizontal),
                 )
             }
@@ -155,7 +157,7 @@ fun TodayScreenContent(
         if (state.similar.isNotEmpty()) {
             item(key = "similar_header") {
                 InkSectionHeader(
-                    title = "Похоже на прочитанное",
+                    title = stringResource(MR.strings.ml_g4_today_similar),
                     modifier = Modifier.padding(horizontal = InkGlassTokens.ScreenHorizontal),
                 )
             }
@@ -167,9 +169,9 @@ fun TodayScreenContent(
         if (state.updates.isNotEmpty()) {
             item(key = "updates_header") {
                 InkSectionHeader(
-                    title = "Новые главы",
+                    title = stringResource(MR.strings.ml_g4_today_new_chapters),
                     modifier = Modifier.padding(horizontal = InkGlassTokens.ScreenHorizontal),
-                    trailing = { SectionAction("Все обновления", onOpenUpdates) },
+                    trailing = { SectionAction(stringResource(MR.strings.ml_g4_today_all_updates), onOpenUpdates) },
                 )
             }
             item(key = "updates_row") {
@@ -180,9 +182,9 @@ fun TodayScreenContent(
         if (state.history.isNotEmpty()) {
             item(key = "history_header") {
                 InkSectionHeader(
-                    title = "Недавно читали",
+                    title = stringResource(MR.strings.ml_g4_today_recently_read),
                     modifier = Modifier.padding(horizontal = InkGlassTokens.ScreenHorizontal),
-                    trailing = { SectionAction("История", onOpenHistory) },
+                    trailing = { SectionAction(stringResource(MR.strings.history), onOpenHistory) },
                 )
             }
             item(key = "history_row") {
@@ -219,10 +221,18 @@ private fun TodayHero(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(Modifier.weight(1f)) {
-                Text("МАНГАЛКА", style = InkTypography.Eyebrow, color = InkGlassTokens.Accent)
-                Text("Сегодня", style = InkTypography.Display, color = InkGlassTokens.TextPrimary)
+                Text(
+                    stringResource(MR.strings.ml_g4_brand_eyebrow),
+                    style = InkTypography.Eyebrow,
+                    color = InkGlassTokens.Accent,
+                )
+                Text(
+                    stringResource(MR.strings.ml_g4_today_title),
+                    style = InkTypography.Display,
+                    color = InkGlassTokens.TextPrimary,
+                )
             }
-            InkGlassIconButton(Icons.Outlined.Search, "Поиск", onSearch)
+            InkGlassIconButton(Icons.Outlined.Search, stringResource(MR.strings.ml_g4_search), onSearch)
         }
 
         when {
@@ -230,17 +240,16 @@ private fun TodayHero(
                 modifier = Modifier.align(Alignment.Center),
             )
             hasError -> InkErrorState(
-                title = "Не удалось загрузить Сегодня",
-                message = "Проверьте подключение и попробуйте ещё раз.",
+                title = stringResource(MR.strings.ml_g4_today_error_title),
+                message = stringResource(MR.strings.ml_g4_today_error_message),
                 onRetry = onRetry,
                 modifier = Modifier
                     .align(Alignment.Center)
                     .padding(horizontal = InkGlassTokens.Space32),
             )
             hero == null -> InkEmptyState(
-                title = "Начните с первой главы",
-                message = "Откройте каталог, выберите мангу — и здесь появятся продолжение чтения, " +
-                    "новые главы и ваша активность.",
+                title = stringResource(MR.strings.ml_g4_today_empty_title),
+                message = stringResource(MR.strings.ml_g4_today_empty_message),
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(
@@ -248,7 +257,7 @@ private fun TodayHero(
                         end = InkGlassTokens.ScreenHorizontal,
                         bottom = InkGlassTokens.Space24,
                     ),
-                actionLabel = "Открыть каталог",
+                actionLabel = stringResource(MR.strings.ml_g4_today_open_catalog),
                 onAction = onBrowse,
             )
             else -> InkGlassSurface(
@@ -264,7 +273,11 @@ private fun TodayHero(
                 Column(verticalArrangement = Arrangement.spacedBy(InkGlassTokens.Space16)) {
                     Row(verticalAlignment = Alignment.Top) {
                         Column(Modifier.weight(1f)) {
-                            Text("ПРОДОЛЖИТЬ ЧТЕНИЕ", style = InkTypography.Eyebrow, color = InkGlassTokens.Accent)
+                            Text(
+                                stringResource(MR.strings.ml_g4_today_continue_reading),
+                                style = InkTypography.Eyebrow,
+                                color = InkGlassTokens.Accent,
+                            )
                             Spacer(Modifier.height(InkGlassTokens.Space8))
                             Text(
                                 hero.title,
@@ -282,7 +295,7 @@ private fun TodayHero(
                                 } else {
                                     Icons.Outlined.BookmarkBorder
                                 },
-                                contentDescription = "Закладка",
+                                contentDescription = stringResource(MR.strings.ml_g4_bookmark),
                                 onClick = { onBookmark(hero.mangaId, hero.chapterId, !hero.bookmarked) },
                                 selected = hero.bookmarked,
                                 modifier = Modifier.size(44.dp),
@@ -294,9 +307,9 @@ private fun TodayHero(
                         listOf(
                             hero.chapterLabel,
                             if (hero.totalPages != null) {
-                                "Страница ${hero.currentPage} из ${hero.totalPages}"
+                                stringResource(MR.strings.ml_g4_today_page_of, hero.currentPage, hero.totalPages)
                             } else {
-                                "Страница ${hero.currentPage}"
+                                stringResource(MR.strings.ml_g4_today_page, hero.currentPage)
                             },
                         ).filter { it.isNotBlank() }.joinToString("  ·  "),
                         style = InkTypography.Body,
@@ -304,7 +317,7 @@ private fun TodayHero(
                     )
                     hero.progress?.let { InkGlassProgressBar(it) }
                     InkAccentButton(
-                        label = "Читать",
+                        label = stringResource(MR.strings.ml_g4_today_read),
                         onClick = { onRead(hero.mangaId, hero.chapterId) },
                         modifier = Modifier.fillMaxWidth(),
                     )
@@ -402,7 +415,7 @@ private fun TodaySimilarRow(items: List<TodaySimilarUiModel>, onSearchTitle: (St
         items(items, key = { "similar_${it.id}" }) { item ->
             InkMangaCard(
                 title = item.title,
-                subtitle = "как «${item.because}»",
+                subtitle = stringResource(MR.strings.ml_g4_today_similar_because, item.because),
                 meta = item.score?.let { "★ $it" },
                 onClick = { onSearchTitle(item.title) },
                 modifier = Modifier.width(154.dp),

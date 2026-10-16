@@ -115,7 +115,7 @@ fun MangaToolbar(
     ) {
         InkGlassIconButton(
             imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
-            contentDescription = "Назад",
+            contentDescription = stringResource(MR.strings.ml_g2_back),
             onClick = navigateUp,
         )
         Text(
@@ -182,7 +182,7 @@ fun MangaToolbar(
                     Item(stringResource(MR.strings.action_migrate), onClickMigrate)
                 }
                 Item(stringResource(MR.strings.action_notes), onClickEditNotes)
-                Item("Версии и источники", onClickLinkedVersions)
+                Item(stringResource(MR.strings.ml_g2_versions_and_sources), onClickLinkedVersions)
             }
         }
     }

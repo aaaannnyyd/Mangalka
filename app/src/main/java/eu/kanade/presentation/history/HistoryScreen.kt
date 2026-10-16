@@ -76,7 +76,7 @@ fun HistoryScreen(
                     modifier = Modifier.fillMaxSize().padding(contentPadding),
                     contentAlignment = Alignment.Center,
                 ) {
-                    InkLoadingState(label = "Загружаем историю")
+                    InkLoadingState(label = stringResource(MR.strings.ml_g3_history_loading))
                 }
             } else if (it.isEmpty()) {
                 val msg = if (!state.searchQuery.isNullOrEmpty()) {
@@ -89,7 +89,11 @@ fun HistoryScreen(
                     contentAlignment = Alignment.Center,
                 ) {
                     InkEmptyState(
-                        title = if (!state.searchQuery.isNullOrEmpty()) "Ничего не найдено" else "История пуста",
+                        title = if (!state.searchQuery.isNullOrEmpty()) {
+                            stringResource(MR.strings.ml_g3_nothing_found)
+                        } else {
+                            stringResource(MR.strings.ml_g3_history_empty)
+                        },
                         message = stringResource(msg),
                         modifier = Modifier.padding(horizontal = InkGlassTokens.ScreenHorizontal),
                     )

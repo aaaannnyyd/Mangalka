@@ -159,24 +159,24 @@ fun TrackerSearch(
                 queryResult == null -> {
                     InkLoadingState(
                         modifier = Modifier.align(Alignment.Center),
-                        label = "Ищем тайтлы",
+                        label = stringResource(MR.strings.ml_g1_tracker_searching),
                     )
                 }
                 queryResult.isFailure -> {
                     InkEmptyState(
-                        title = "Не удалось выполнить поиск",
+                        title = stringResource(MR.strings.ml_g1_tracker_search_failed),
                         message = queryResult.exceptionOrNull()?.message ?: stringResource(MR.strings.unknown_error),
                         modifier = Modifier
                             .align(Alignment.Center)
                             .padding(InkGlassTokens.Space20),
-                        actionLabel = "Повторить",
+                        actionLabel = stringResource(MR.strings.action_retry),
                         onAction = onDispatchQuery,
                     )
                 }
                 queryResult.getOrNull().isNullOrEmpty() -> {
                     InkEmptyState(
-                        title = "Ничего не найдено",
-                        message = "Попробуйте изменить название или выбрать другой вариант написания.",
+                        title = stringResource(MR.strings.ml_g1_tracker_nothing_found),
+                        message = stringResource(MR.strings.ml_g1_tracker_nothing_found_hint),
                         modifier = Modifier
                             .align(Alignment.Center)
                             .padding(InkGlassTokens.Space20),
@@ -347,10 +347,14 @@ private fun SearchResultItem(
                             color = InkGlassTokens.TextSecondary,
                         )
                     }
-                    if (type.isNotBlank()) SearchResultItemDetails("Тип", type)
-                    if (trackSearch.start_date.isNotBlank()) SearchResultItemDetails("Начало", trackSearch.start_date)
-                    if (status.isNotBlank()) SearchResultItemDetails("Статус", status)
-                    if (trackSearch.score != -1.0) SearchResultItemDetails("Оценка", trackSearch.score.toString())
+                    if (type.isNotBlank()) SearchResultItemDetails(stringResource(MR.strings.track_type), type)
+                    if (trackSearch.start_date.isNotBlank()) {
+                        SearchResultItemDetails(stringResource(MR.strings.ml_g1_tracker_start), trackSearch.start_date)
+                    }
+                    if (status.isNotBlank()) SearchResultItemDetails(stringResource(MR.strings.status), status)
+                    if (trackSearch.score != -1.0) {
+                        SearchResultItemDetails(stringResource(MR.strings.score), trackSearch.score.toString())
+                    }
                 }
             }
             if (description.isNotBlank()) {

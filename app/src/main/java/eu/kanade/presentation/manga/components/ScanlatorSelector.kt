@@ -20,11 +20,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.InkGlassDropdownMenu
 import tachiyomi.presentation.core.components.InkGlassLevel
 import tachiyomi.presentation.core.components.InkGlassSurface
 import tachiyomi.presentation.core.components.InkGlassTokens
 import tachiyomi.presentation.core.components.InkTypography
+import tachiyomi.presentation.core.i18n.stringResource
 
 @Composable
 fun ScanlatorSelector(
@@ -37,11 +39,12 @@ fun ScanlatorSelector(
 
     val sorted = remember(availableScanlators) { availableScanlators.sortedWith(String.CASE_INSENSITIVE_ORDER) }
     val enabled = remember(availableScanlators, excludedScanlators) { availableScanlators - excludedScanlators }
+    val allLabel = stringResource(MR.strings.all)
     val selection = when {
-        excludedScanlators.isEmpty() || enabled.size == availableScanlators.size -> "Все"
+        excludedScanlators.isEmpty() || enabled.size == availableScanlators.size -> allLabel
         enabled.size == 1 -> enabled.first()
-        enabled.isEmpty() -> "Все"
-        else -> "Несколько"
+        enabled.isEmpty() -> allLabel
+        else -> stringResource(MR.strings.ml_g1_scanlator_multiple)
     }
 
     var expanded by remember { mutableStateOf(false) }
@@ -62,7 +65,7 @@ fun ScanlatorSelector(
             ) {
                 Column(Modifier.weight(1f)) {
                     Text(
-                        text = "ПЕРЕВОД",
+                        text = stringResource(MR.strings.ml_g1_scanlator_eyebrow),
                         style = InkTypography.Eyebrow,
                         color = InkGlassTokens.Accent,
                     )
@@ -89,7 +92,7 @@ fun ScanlatorSelector(
             DropdownMenuItem(
                 text = {
                     Text(
-                        text = "Все переводчики",
+                        text = stringResource(MR.strings.ml_g1_scanlator_all),
                         color = if (excludedScanlators.isEmpty()) InkGlassTokens.Accent else InkGlassTokens.TextPrimary,
                     )
                 },

@@ -205,11 +205,16 @@ object SettingsDownloadScreen : SearchableSettings {
                 Preference.PreferenceItem.ListPreference(
                     preference = downloadPreferences.smartPrefetchChapters,
                     entries = listOf(0, 1, 2, 3).associateWith {
-                        if (it == 0) stringResource(MR.strings.disabled) else "Следующие $it"
+                        if (it ==
+                            0
+                        ) {
+                            stringResource(MR.strings.disabled)
+                        } else {
+                            stringResource(MR.strings.ml_g3_smart_prefetch_next, it)
+                        }
                     },
-                    title = "Умная предзагрузка",
-                    subtitle = "Пока читаете онлайн тайтл из библиотеки, по Wi‑Fi скачиваем следующие главы, " +
-                        "а прочитанные из них потом удаляем сами",
+                    title = stringResource(MR.strings.ml_g3_smart_prefetch),
+                    subtitle = stringResource(MR.strings.ml_g3_smart_prefetch_summary),
                 ),
             ),
         )

@@ -238,7 +238,13 @@ private fun MigrationSheetSwitchItem(
                 }
             }
             InkGlassChip(
-                label = if (checked) "ВКЛ" else "ВЫКЛ",
+                label = if (checked) {
+                    stringResource(
+                        MR.strings.ml_g3_chip_on,
+                    )
+                } else {
+                    stringResource(MR.strings.ml_g3_chip_off)
+                },
                 selected = checked,
                 onClick = onClick,
             )

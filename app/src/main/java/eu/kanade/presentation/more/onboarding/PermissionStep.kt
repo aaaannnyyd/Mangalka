@@ -38,10 +38,12 @@ import eu.kanade.presentation.util.rememberRequestPackageInstallsPermissionState
 import eu.kanade.tachiyomi.util.system.launchRequestPackageInstallsPermission
 import eu.kanade.tachiyomi.util.system.telemetryIncluded
 import mihon.app.di.appGraph
+import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.InkGlassLevel
 import tachiyomi.presentation.core.components.InkGlassSurface
 import tachiyomi.presentation.core.components.InkGlassTokens
 import tachiyomi.presentation.core.components.InkTypography
+import tachiyomi.presentation.core.i18n.stringResource
 import tachiyomi.presentation.core.util.collectAsState
 
 internal class PermissionStep : OnboardingStep {
@@ -77,19 +79,19 @@ internal class PermissionStep : OnboardingStep {
 
         Column(verticalArrangement = Arrangement.spacedBy(InkGlassTokens.Space12)) {
             Text(
-                "Нужные разрешения",
+                stringResource(MR.strings.ml_g3_perm_title),
                 style = InkTypography.Title,
                 color = InkGlassTokens.TextPrimary,
             )
             Text(
-                "Ничего лишнего: только установка расширений, уведомления и стабильные фоновые задачи.",
+                stringResource(MR.strings.ml_g3_perm_subtitle),
                 style = InkTypography.Body,
                 color = InkGlassTokens.TextSecondary,
             )
 
             PermissionRow(
-                title = "Установка расширений",
-                subtitle = "Нужно для источников манги.",
+                title = stringResource(MR.strings.ml_g3_perm_install),
+                subtitle = stringResource(MR.strings.ml_g3_perm_install_summary),
                 granted = installGranted,
                 onClick = { context.launchRequestPackageInstallsPermission() },
             )
@@ -100,16 +102,16 @@ internal class PermissionStep : OnboardingStep {
                     onResult = {},
                 )
                 PermissionRow(
-                    title = "Уведомления",
-                    subtitle = "Обновления библиотеки и загрузки.",
+                    title = stringResource(MR.strings.ml_g3_perm_notifications),
+                    subtitle = stringResource(MR.strings.ml_g3_perm_notifications_summary),
                     granted = notificationGranted,
                     onClick = { permissionRequester.launch(Manifest.permission.POST_NOTIFICATIONS) },
                 )
             }
 
             PermissionRow(
-                title = "Работа в фоне",
-                subtitle = "Чтобы загрузки и резервные копии не обрывались.",
+                title = stringResource(MR.strings.ml_g3_perm_background),
+                subtitle = stringResource(MR.strings.ml_g3_perm_background_summary),
                 granted = batteryGranted,
                 onClick = {
                     @SuppressLint("BatteryLife")
@@ -124,23 +126,23 @@ internal class PermissionStep : OnboardingStep {
                 val crashlyticsPref = privacyPreferences.crashlytics
                 val crashlytics by crashlyticsPref.collectAsState()
                 PermissionRow(
-                    title = "Отчёты о сбоях",
-                    subtitle = "Можно отключить в любой момент.",
+                    title = stringResource(MR.strings.ml_g3_perm_crash_reports),
+                    subtitle = stringResource(MR.strings.ml_g3_perm_crash_reports_summary),
                     granted = crashlytics,
                     onClick = { crashlyticsPref.set(!crashlytics) },
-                    grantedLabel = "Включено",
-                    actionLabel = "Выключено",
+                    grantedLabel = stringResource(MR.strings.on),
+                    actionLabel = stringResource(MR.strings.off),
                 )
 
                 val analyticsPref = privacyPreferences.analytics
                 val analytics by analyticsPref.collectAsState()
                 PermissionRow(
-                    title = "Анонимная аналитика",
-                    subtitle = "Помогает находить проблемы интерфейса.",
+                    title = stringResource(MR.strings.ml_g3_perm_analytics),
+                    subtitle = stringResource(MR.strings.ml_g3_perm_analytics_summary),
                     granted = analytics,
                     onClick = { analyticsPref.set(!analytics) },
-                    grantedLabel = "Включено",
-                    actionLabel = "Выключено",
+                    grantedLabel = stringResource(MR.strings.on),
+                    actionLabel = stringResource(MR.strings.off),
                 )
             }
         }
@@ -152,8 +154,8 @@ internal class PermissionStep : OnboardingStep {
         subtitle: String,
         granted: Boolean,
         onClick: () -> Unit,
-        grantedLabel: String = "Готово",
-        actionLabel: String = "Разрешить",
+        grantedLabel: String = stringResource(MR.strings.ml_g3_perm_granted),
+        actionLabel: String = stringResource(MR.strings.ml_g3_perm_allow),
     ) {
         InkGlassSurface(
             modifier = Modifier.fillMaxWidth(),

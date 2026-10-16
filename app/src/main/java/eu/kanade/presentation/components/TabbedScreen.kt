@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import dev.icerock.moko.resources.StringResource
 import kotlinx.coroutines.launch
+import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.InkGlassChip
 import tachiyomi.presentation.core.components.InkGlassIconButton
 import tachiyomi.presentation.core.components.InkGlassLevel
@@ -177,7 +178,7 @@ private fun InkTabbedScreen(
                             decorationBox = { inner ->
                                 if (searchQuery.isNullOrEmpty()) {
                                     Text(
-                                        "Поиск расширений…",
+                                        stringResource(MR.strings.ml_g3_search_extensions_hint),
                                         style = InkTypography.Body,
                                         color = InkGlassTokens.TextTertiary,
                                     )
@@ -187,7 +188,7 @@ private fun InkTabbedScreen(
                         )
                         InkGlassIconButton(
                             imageVector = Icons.Outlined.Close,
-                            contentDescription = "Закрыть поиск",
+                            contentDescription = stringResource(MR.strings.ml_g3_close_search),
                             onClick = { onChangeSearchQuery(null) },
                         )
                     }
@@ -204,7 +205,11 @@ private fun InkTabbedScreen(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Column(Modifier.weight(1f)) {
-                        Text("МАНГАЛКА", style = InkTypography.Eyebrow, color = InkGlassTokens.Accent)
+                        Text(
+                            stringResource(MR.strings.ml_g3_brand_eyebrow),
+                            style = InkTypography.Eyebrow,
+                            color = InkGlassTokens.Accent,
+                        )
                         Text(
                             title,
                             style = InkTypography.Display,
@@ -217,7 +222,7 @@ private fun InkTabbedScreen(
                         if (currentTab.searchEnabled) {
                             InkGlassIconButton(
                                 imageVector = Icons.Outlined.Search,
-                                contentDescription = "Поиск",
+                                contentDescription = stringResource(MR.strings.ml_g3_search),
                                 onClick = { onChangeSearchQuery("") },
                             )
                         }

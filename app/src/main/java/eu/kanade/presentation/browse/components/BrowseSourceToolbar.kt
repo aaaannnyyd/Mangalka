@@ -85,7 +85,7 @@ fun BrowseSourceToolbar(
     ) {
         InkGlassIconButton(
             imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
-            contentDescription = "Назад",
+            contentDescription = stringResource(MR.strings.ml_g2_back),
             onClick = navigateUp,
         )
 
@@ -111,7 +111,7 @@ fun BrowseSourceToolbar(
                     decorationBox = { inner ->
                         if (searchQuery.isEmpty()) {
                             Text(
-                                text = "Поиск в $title…",
+                                text = stringResource(MR.strings.ml_g2_search_in, title),
                                 style = InkTypography.Body,
                                 color = InkGlassTokens.TextTertiary,
                                 maxLines = 1,
@@ -124,7 +124,7 @@ fun BrowseSourceToolbar(
             }
             InkGlassIconButton(
                 imageVector = Icons.Outlined.Close,
-                contentDescription = "Закрыть поиск",
+                contentDescription = stringResource(MR.strings.ml_g2_close_search),
                 onClick = navigateUp,
             )
             return@Row
@@ -141,7 +141,7 @@ fun BrowseSourceToolbar(
 
         InkGlassIconButton(
             imageVector = Icons.Outlined.Search,
-            contentDescription = "Поиск",
+            contentDescription = stringResource(MR.strings.ml_g2_search),
             onClick = { onSearchQueryChange("") },
         )
 
@@ -189,7 +189,7 @@ fun BrowseSourceToolbar(
         Box {
             InkGlassIconButton(
                 imageVector = Icons.Outlined.MoreVert,
-                contentDescription = "Ещё",
+                contentDescription = stringResource(MR.strings.ml_g2_more),
                 onClick = { showingMore = true },
             )
             InkGlassDropdownMenu(

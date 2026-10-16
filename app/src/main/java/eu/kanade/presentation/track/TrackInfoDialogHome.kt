@@ -92,8 +92,16 @@ fun TrackInfoDialogHome(
                 .windowInsetsPadding(WindowInsets.systemBars),
             verticalArrangement = Arrangement.spacedBy(InkGlassTokens.Space16),
         ) {
-            Text("ТРЕКИНГ", style = InkTypography.Eyebrow, color = InkGlassTokens.Accent)
-            Text("Прогресс чтения", style = InkTypography.Headline, color = InkGlassTokens.TextPrimary)
+            Text(
+                stringResource(MR.strings.ml_g4_track_eyebrow),
+                style = InkTypography.Eyebrow,
+                color = InkGlassTokens.Accent,
+            )
+            Text(
+                stringResource(MR.strings.ml_g4_track_title),
+                style = InkTypography.Headline,
+                color = InkGlassTokens.TextPrimary,
+            )
 
             trackItems.forEach { item ->
                 if (item.track != null) {
@@ -247,20 +255,20 @@ private fun TrackInfoItem(
             ) {
                 TrackDetailsItem(
                     modifier = Modifier.weight(1f),
-                    label = "Статус",
+                    label = stringResource(MR.strings.status),
                     text = status?.let { stringResource(it) } ?: "—",
                     onClick = onStatusClick,
                 )
                 TrackDetailsItem(
                     modifier = Modifier.weight(1f),
-                    label = "Главы",
+                    label = stringResource(MR.strings.chapters),
                     text = chapters,
                     onClick = onChaptersClick,
                 )
                 if (onScoreClick != null) {
                     TrackDetailsItem(
                         modifier = Modifier.weight(1f),
-                        label = "Оценка",
+                        label = stringResource(MR.strings.score),
                         text = score ?: "—",
                         onClick = onScoreClick,
                     )
@@ -276,13 +284,13 @@ private fun TrackInfoItem(
                 ) {
                     TrackDetailsItem(
                         modifier = Modifier.weight(1f),
-                        label = "Начато",
+                        label = stringResource(MR.strings.label_started),
                         text = startDate ?: "—",
                         onClick = onStartDateClick,
                     )
                     TrackDetailsItem(
                         modifier = Modifier.weight(1f),
-                        label = "Завершено",
+                        label = stringResource(MR.strings.ml_g4_track_finished),
                         text = endDate ?: "—",
                         onClick = onEndDateClick,
                     )
@@ -357,7 +365,11 @@ private fun TrackInfoItemEmpty(
                 verticalArrangement = Arrangement.spacedBy(InkGlassTokens.Space4),
             ) {
                 Text(tracker.name, style = InkTypography.TitleSmall, color = InkGlassTokens.TextPrimary)
-                Text("Не подключено", style = InkTypography.BodySmall, color = InkGlassTokens.TextTertiary)
+                Text(
+                    stringResource(MR.strings.ml_g4_track_not_connected),
+                    style = InkTypography.BodySmall,
+                    color = InkGlassTokens.TextTertiary,
+                )
             }
             InkAccentButton(
                 label = stringResource(MR.strings.add_tracking),

@@ -93,20 +93,24 @@ fun ExtensionScreen(
         when {
             state.isLoading -> InkLoadingState(
                 modifier = Modifier.padding(contentPadding).padding(InkGlassTokens.Space32),
-                label = "Загружаем расширения",
+                label = stringResource(MR.strings.ml_g3_extensions_loading),
             )
             state.isEmpty -> {
-                val title = if (!searchQuery.isNullOrEmpty()) "Ничего не найдено" else "Расширений пока нет"
-                val message = if (!searchQuery.isNullOrEmpty()) {
-                    "Попробуйте изменить запрос или фильтры."
+                val title = if (!searchQuery.isNullOrEmpty()) {
+                    stringResource(MR.strings.ml_g3_nothing_found)
                 } else {
-                    "Добавьте репозиторий расширений, чтобы подключить каталоги манги."
+                    stringResource(MR.strings.ml_g3_extensions_empty_title)
+                }
+                val message = if (!searchQuery.isNullOrEmpty()) {
+                    stringResource(MR.strings.ml_g3_try_other_query)
+                } else {
+                    stringResource(MR.strings.ml_g3_extensions_empty_message)
                 }
                 InkEmptyState(
                     title = title,
                     message = message,
                     modifier = Modifier.padding(contentPadding).padding(InkGlassTokens.ScreenHorizontal),
-                    actionLabel = "Репозитории",
+                    actionLabel = stringResource(MR.strings.ml_g3_repositories),
                     onAction = { navigator.push(ExtensionStoresScreen()) },
                 )
             }

@@ -17,10 +17,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import eu.kanade.tachiyomi.R
+import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.InkGlassLevel
 import tachiyomi.presentation.core.components.InkGlassSurface
 import tachiyomi.presentation.core.components.InkGlassTokens
 import tachiyomi.presentation.core.components.InkTypography
+import tachiyomi.presentation.core.i18n.stringResource
 
 @Composable
 fun LogoHeader(
@@ -54,12 +56,12 @@ fun LogoHeader(
             }
         }
         Text(
-            text = "Мангалка",
+            text = stringResource(MR.strings.ml_g1_logo_app_name),
             style = InkTypography.Headline,
             color = InkGlassTokens.TextPrimary,
         )
         Text(
-            text = "Манга без визуального шума",
+            text = stringResource(MR.strings.ml_g1_logo_tagline),
             style = InkTypography.BodySmall,
             color = InkGlassTokens.TextSecondary,
         )

@@ -136,7 +136,7 @@ private fun TransitionText(
 
                 if (onTopChapterComments != null) {
                     InkGlassButton(
-                        label = "Комментарии главы",
+                        label = stringResource(MR.strings.ml_g3_chapter_comments),
                         icon = Icons.Outlined.Forum,
                         onClick = onTopChapterComments,
                         modifier = Modifier.fillMaxWidth(),
@@ -219,7 +219,7 @@ private fun ChapterIdentity(
         )
         scanlator?.takeIf { it.isNotBlank() }?.let {
             Text(
-                text = "Перевод · $it",
+                text = stringResource(MR.strings.ml_g3_translation_by, it),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 style = InkTypography.BodySmall,
@@ -256,12 +256,12 @@ private fun EndOfChapterCard(
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(InkGlassTokens.Space12)) {
                 Text(
-                    text = "ГЛАВА ЗАВЕРШЕНА",
+                    text = stringResource(MR.strings.ml_g3_chapter_finished_eyebrow),
                     style = InkTypography.Eyebrow,
                     color = InkGlassTokens.Accent,
                 )
                 Text(
-                    text = currentChapter?.name ?: "Глава завершена",
+                    text = currentChapter?.name ?: stringResource(MR.strings.ml_g3_chapter_finished),
                     style = InkTypography.Title,
                     color = InkGlassTokens.TextPrimary,
                     maxLines = 2,
@@ -269,7 +269,7 @@ private fun EndOfChapterCard(
                 )
                 currentChapter?.scanlator?.takeIf { it.isNotBlank() }?.let {
                     Text(
-                        text = "Перевод · $it",
+                        text = stringResource(MR.strings.ml_g3_translation_by, it),
                         style = InkTypography.BodySmall,
                         color = InkGlassTokens.TextSecondary,
                     )
@@ -277,7 +277,7 @@ private fun EndOfChapterCard(
 
                 if (nextChapter != null && onNextChapter != null) {
                     InkAccentButton(
-                        label = "Следующая глава",
+                        label = stringResource(MR.strings.action_next_chapter),
                         onClick = onNextChapter,
                         modifier = Modifier.fillMaxWidth(),
                     )
@@ -285,7 +285,7 @@ private fun EndOfChapterCard(
 
                 if (onChapterComments != null) {
                     InkGlassButton(
-                        label = "Комментарии главы",
+                        label = stringResource(MR.strings.ml_g3_chapter_comments),
                         icon = Icons.Outlined.Forum,
                         onClick = onChapterComments,
                         modifier = Modifier.fillMaxWidth(),
@@ -303,7 +303,11 @@ private fun EndOfChapterCard(
                         horizontalArrangement = Arrangement.spacedBy(InkGlassTokens.Space12),
                     ) {
                         Column(Modifier.weight(1f)) {
-                            Text("ДАЛЬШЕ", style = InkTypography.Eyebrow, color = InkGlassTokens.TextTertiary)
+                            Text(
+                                stringResource(MR.strings.ml_g3_up_next_eyebrow),
+                                style = InkTypography.Eyebrow,
+                                color = InkGlassTokens.TextTertiary,
+                            )
                             Text(
                                 text = nextChapter.name,
                                 style = InkTypography.TitleSmall,
@@ -441,7 +445,7 @@ private fun ChapterText(
             )
             scanlator?.takeIf { it.isNotBlank() }?.let {
                 Text(
-                    text = "Перевод · $it",
+                    text = stringResource(MR.strings.ml_g3_translation_by, it),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     style = InkTypography.BodySmall,

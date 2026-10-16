@@ -114,4 +114,18 @@
         <item quantity="one">%1$d update failed</item>
         <item quantity="other">%1$d updates failed</item>
     </plurals>
+
+    <!-- Mangalka -->
+    <plurals name="ml_g1_comments_messages">
+    <item quantity="one">%d message</item>
+    <item quantity="other">%d messages</item>
+</plurals>
+    <plurals name="ml_g4_stats_chapters_word">
+    <item quantity="one">chapter</item>
+    <item quantity="other">chapters</item>
+</plurals>
+    <plurals name="ml_g4_stats_chapters_count">
+    <item quantity="one">%1$d chapter</item>
+    <item quantity="other">%1$d chapters</item>
+</plurals>
 </resources>

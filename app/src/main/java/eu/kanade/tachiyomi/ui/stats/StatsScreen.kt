@@ -53,7 +53,7 @@ class StatsScreen : Screen() {
                             .padding(paddingValues)
                             .fillMaxWidth()
                             .padding(top = InkGlassTokens.Space48),
-                        label = "Собираем статистику",
+                        label = stringResource(MR.strings.ml_g3_stats_loading),
                     )
                     return@Scaffold
                 }

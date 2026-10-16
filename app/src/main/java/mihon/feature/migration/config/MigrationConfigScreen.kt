@@ -98,7 +98,7 @@ class MigrationConfigScreen(private val mangaIds: Collection<Long>) : Screen() {
         }
 
         if (state.isLoading) {
-            InkLoadingState(label = "Готовим источники для переноса")
+            InkLoadingState(label = stringResource(MR.strings.ml_g2_preparing_migration_sources))
             return
         }
 

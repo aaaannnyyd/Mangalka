@@ -138,4 +138,24 @@
         <item quantity="many">%1$d ошибок обновлений</item>
         <item quantity="other">%1$d ошибок обновлений</item>
     </plurals>
+
+    <!-- Mangalka -->
+    <plurals name="ml_g1_comments_messages">
+    <item quantity="one">%d сообщение</item>
+    <item quantity="few">%d сообщения</item>
+    <item quantity="many">%d сообщений</item>
+    <item quantity="other">%d сообщения</item>
+</plurals>
+    <plurals name="ml_g4_stats_chapters_word">
+    <item quantity="one">глава</item>
+    <item quantity="few">главы</item>
+    <item quantity="many">глав</item>
+    <item quantity="other">глав</item>
+</plurals>
+    <plurals name="ml_g4_stats_chapters_count">
+    <item quantity="one">%1$d глава</item>
+    <item quantity="few">%1$d главы</item>
+    <item quantity="many">%1$d глав</item>
+    <item quantity="other">%1$d глав</item>
+</plurals>
 </resources>

@@ -65,7 +65,7 @@ fun ReaderTopBar(
         ) {
             InkGlassIconButton(
                 imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
-                contentDescription = "Назад",
+                contentDescription = stringResource(MR.strings.action_webview_back),
                 onClick = navigateUp,
             )
             Spacer(Modifier.width(InkGlassTokens.Space12))
@@ -100,7 +100,7 @@ fun ReaderTopBar(
                 androidx.compose.foundation.layout.Box {
                     InkGlassIconButton(
                         imageVector = Icons.Outlined.MoreVert,
-                        contentDescription = "Ещё",
+                        contentDescription = stringResource(MR.strings.ml_g1_action_more),
                         onClick = { menuExpanded = true },
                     )
                     InkGlassDropdownMenu(

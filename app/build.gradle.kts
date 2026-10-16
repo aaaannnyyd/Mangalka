@@ -33,8 +33,8 @@ android {
     defaultConfig {
         applicationId = "app.mangalka"
 
-        versionCode = 11000
-        versionName = "1.1.0"
+        versionCode = 11100
+        versionName = "1.1.1"
 
         buildConfigField("String", "COMMIT_COUNT", "\"${getLatestCommitCount()}\"")
         buildConfigField("String", "COMMIT_SHA", "\"${getLatestCommitSha()}\"")

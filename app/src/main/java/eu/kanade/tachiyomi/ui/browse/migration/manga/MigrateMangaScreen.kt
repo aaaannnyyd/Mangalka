@@ -51,7 +51,7 @@ data class MigrateMangaScreen(
         val state by viewModel.state.collectAsStateWithLifecycle()
 
         if (state.isLoading) {
-            InkLoadingState(label = "Загружаем библиотеку источника")
+            InkLoadingState(label = stringResource(MR.strings.ml_g2_loading_source_library))
             return
         }
 
@@ -93,8 +93,8 @@ data class MigrateMangaScreen(
         ) { contentPadding ->
             if (state.isEmpty) {
                 InkEmptyState(
-                    title = "Нечего переносить",
-                    message = "В этом источнике нет тайтлов из вашей библиотеки.",
+                    title = stringResource(MR.strings.ml_g2_nothing_to_migrate),
+                    message = stringResource(MR.strings.ml_g2_nothing_to_migrate_message),
                     modifier = Modifier.padding(contentPadding),
                 )
                 return@Scaffold

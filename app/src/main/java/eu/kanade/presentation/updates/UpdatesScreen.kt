@@ -101,14 +101,14 @@ fun UpdateScreen(
                 modifier = Modifier.fillMaxSize().padding(contentPadding),
                 contentAlignment = Alignment.Center,
             ) {
-                InkLoadingState(label = "Загружаем обновления")
+                InkLoadingState(label = stringResource(MR.strings.ml_g2_loading_updates))
             }
             state.items.isEmpty() -> Box(
                 modifier = Modifier.fillMaxSize().padding(contentPadding),
                 contentAlignment = Alignment.Center,
             ) {
                 InkEmptyState(
-                    title = "Обновлений пока нет",
+                    title = stringResource(MR.strings.ml_g2_no_updates_yet),
                     message = stringResource(MR.strings.information_no_recent),
                     modifier = Modifier.padding(horizontal = InkGlassTokens.ScreenHorizontal),
                 )

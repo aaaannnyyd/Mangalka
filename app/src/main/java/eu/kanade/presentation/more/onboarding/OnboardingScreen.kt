@@ -40,12 +40,14 @@ import eu.kanade.domain.ui.model.setAppCompatDelegateThemeMode
 import mihon.app.di.appGraph
 import soup.compose.material.motion.animation.materialSharedAxisX
 import soup.compose.material.motion.animation.rememberSlideDistance
+import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.InkAccentButton
 import tachiyomi.presentation.core.components.InkGlassLevel
 import tachiyomi.presentation.core.components.InkGlassScaffold
 import tachiyomi.presentation.core.components.InkGlassSurface
 import tachiyomi.presentation.core.components.InkGlassTokens
 import tachiyomi.presentation.core.components.InkTypography
+import tachiyomi.presentation.core.i18n.stringResource
 
 @Composable
 fun OnboardingScreen(
@@ -70,7 +72,11 @@ fun OnboardingScreen(
             GuidesStep(onRestoreBackup = onRestoreBackup),
         )
     }
-    val titles = listOf("Хранилище", "Разрешения", "Готово")
+    val titles = listOf(
+        stringResource(MR.strings.ml_g2_onboarding_step_storage),
+        stringResource(MR.strings.ml_g2_onboarding_step_permissions),
+        stringResource(MR.strings.ml_g2_onboarding_step_done),
+    )
     val isLastStep = currentStep == steps.lastIndex
 
     BackHandler(enabled = currentStep != 0) { currentStep-- }
@@ -83,12 +89,20 @@ fun OnboardingScreen(
                 .padding(horizontal = InkGlassTokens.ScreenHorizontal),
         ) {
             Spacer(Modifier.height(InkGlassTokens.Space40))
-            Text("МАНГАЛКА", style = InkTypography.Eyebrow, color = InkGlassTokens.Accent)
-            Spacer(Modifier.height(InkGlassTokens.Space8))
-            Text("Добро пожаловать", style = InkTypography.Display, color = InkGlassTokens.TextPrimary)
+            Text(
+                stringResource(MR.strings.ml_g2_brand_eyebrow),
+                style = InkTypography.Eyebrow,
+                color = InkGlassTokens.Accent,
+            )
             Spacer(Modifier.height(InkGlassTokens.Space8))
             Text(
-                "Три коротких шага — и можно читать.",
+                stringResource(MR.strings.ml_g2_onboarding_welcome),
+                style = InkTypography.Display,
+                color = InkGlassTokens.TextPrimary,
+            )
+            Spacer(Modifier.height(InkGlassTokens.Space8))
+            Text(
+                stringResource(MR.strings.ml_g2_onboarding_subtitle),
                 style = InkTypography.Body,
                 color = InkGlassTokens.TextSecondary,
             )
@@ -146,7 +160,11 @@ fun OnboardingScreen(
 
             Spacer(Modifier.weight(1f))
             InkAccentButton(
-                label = if (isLastStep) "Начать" else "Далее",
+                label = if (isLastStep) {
+                    stringResource(MR.strings.onboarding_action_finish)
+                } else {
+                    stringResource(MR.strings.ml_g2_onboarding_next)
+                },
                 onClick = {
                     if (isLastStep) onComplete() else currentStep++
                 },

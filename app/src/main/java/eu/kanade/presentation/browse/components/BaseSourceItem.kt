@@ -10,8 +10,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import eu.kanade.tachiyomi.util.system.LocaleHelper
 import tachiyomi.domain.source.model.Source
+import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.InkGlassTokens
 import tachiyomi.presentation.core.components.InkTypography
+import tachiyomi.presentation.core.i18n.stringResource
 
 @Composable
 fun BaseSourceItem(
@@ -24,8 +26,9 @@ fun BaseSourceItem(
     action: @Composable RowScope.(Source) -> Unit = {},
     content: @Composable RowScope.(Source, String?) -> Unit = defaultContent,
 ) {
+    val otherLabel = stringResource(MR.strings.other_source)
     val sourceLangString = LocaleHelper.getSourceDisplayName(source.lang, LocalContext.current)
-        .let { if (it.equals("Other", ignoreCase = true)) "Другое" else it }
+        .let { if (it.equals("Other", ignoreCase = true)) otherLabel else it }
         .takeIf { showLanguageInContent }
     BaseBrowseItem(
         modifier = modifier,
@@ -48,7 +51,7 @@ private val defaultContent: @Composable RowScope.(Source, String?) -> Unit = { s
             .weight(1f),
     ) {
         Text(
-            text = if (source.name == "Local source") "Локальный источник" else source.name,
+            text = if (source.name == "Local source") stringResource(MR.strings.ml_g1_local_source) else source.name,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style = InkTypography.TitleSmall,

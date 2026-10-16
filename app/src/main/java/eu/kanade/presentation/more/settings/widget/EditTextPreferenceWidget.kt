@@ -93,7 +93,7 @@ fun EditTextPreferenceWidget(
                             decorationBox = { inner ->
                                 if (textFieldValue.text.isEmpty()) {
                                     Text(
-                                        text = "Введите значение",
+                                        text = stringResource(MR.strings.ml_g2_enter_value),
                                         style = InkTypography.Body,
                                         color = InkGlassTokens.TextTertiary,
                                     )
@@ -104,7 +104,7 @@ fun EditTextPreferenceWidget(
                         if (textFieldValue.text.isNotEmpty()) {
                             InkGlassIconButton(
                                 imageVector = Icons.Outlined.Close,
-                                contentDescription = "Очистить",
+                                contentDescription = stringResource(MR.strings.ml_g2_clear),
                                 onClick = { textFieldValue = TextFieldValue("") },
                             )
                         }

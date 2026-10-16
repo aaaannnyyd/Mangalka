@@ -76,12 +76,20 @@ fun GlobalSearchToolbar(
         ) {
             InkGlassIconButton(
                 imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
-                contentDescription = "Назад",
+                contentDescription = stringResource(MR.strings.ml_g4_back),
                 onClick = navigateUp,
             )
             Column(modifier = Modifier.weight(1f)) {
-                Text("МАНГАЛКА", style = InkTypography.Eyebrow, color = InkGlassTokens.Accent)
-                Text("Поиск манги", style = InkTypography.Headline, color = InkGlassTokens.TextPrimary)
+                Text(
+                    stringResource(MR.strings.ml_g4_brand_eyebrow),
+                    style = InkTypography.Eyebrow,
+                    color = InkGlassTokens.Accent,
+                )
+                Text(
+                    stringResource(MR.strings.ml_g4_global_search_title),
+                    style = InkTypography.Headline,
+                    color = InkGlassTokens.TextPrimary,
+                )
             }
         }
 
@@ -132,7 +140,7 @@ fun GlobalSearchToolbar(
                 if (query.isNotEmpty()) {
                     InkGlassIconButton(
                         imageVector = Icons.Outlined.Close,
-                        contentDescription = "Очистить поиск",
+                        contentDescription = stringResource(MR.strings.ml_g4_clear_search),
                         onClick = { onChangeSearchQuery("") },
                     )
                 }

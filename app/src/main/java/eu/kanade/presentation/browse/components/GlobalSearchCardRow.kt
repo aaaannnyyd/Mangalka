@@ -24,10 +24,12 @@ import eu.kanade.domain.manga.model.sourceRating
 import eu.kanade.presentation.manga.components.MangaCover
 import tachiyomi.domain.manga.model.Manga
 import tachiyomi.domain.manga.model.asMangaCover
+import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.InkGlassLevel
 import tachiyomi.presentation.core.components.InkGlassSurface
 import tachiyomi.presentation.core.components.InkGlassTokens
 import tachiyomi.presentation.core.components.InkTypography
+import tachiyomi.presentation.core.i18n.stringResource
 
 private const val SEARCH_PREVIEW_COLUMNS = 3
 private const val SEARCH_PREVIEW_LIMIT = 6
@@ -134,7 +136,7 @@ private fun SearchMangaCard(
                     shadowElevation = 0.dp,
                 ) {
                     Text(
-                        text = "В библиотеке",
+                        text = stringResource(MR.strings.ml_g4_in_library),
                         style = InkTypography.Eyebrow,
                         color = InkGlassTokens.Accent,
                     )
@@ -163,7 +165,7 @@ private fun EmptyResultItem() {
         shadowElevation = 0.dp,
     ) {
         Text(
-            text = "Ничего не найдено",
+            text = stringResource(MR.strings.ml_g4_nothing_found),
             style = InkTypography.Body,
             color = InkGlassTokens.TextSecondary,
         )

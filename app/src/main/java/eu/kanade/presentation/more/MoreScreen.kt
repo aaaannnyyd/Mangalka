@@ -66,7 +66,7 @@ fun MoreScreen(
 ) {
     val downloadQueueState = downloadQueueStateProvider()
     val downloadSummary = when (downloadQueueState) {
-        DownloadQueueState.Stopped -> "Очередь пуста"
+        DownloadQueueState.Stopped -> stringResource(MR.strings.ml_g3_more_queue_empty)
         is DownloadQueueState.Paused -> {
             val pending = downloadQueueState.pending
             if (pending == 0) {
@@ -108,8 +108,16 @@ fun MoreScreen(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Column(Modifier.weight(1f)) {
-                        Text("МАНГАЛКА", style = InkTypography.Eyebrow, color = InkGlassTokens.Accent)
-                        Text("Ещё", style = InkTypography.Display, color = InkGlassTokens.TextPrimary)
+                        Text(
+                            stringResource(MR.strings.ml_g3_brand_eyebrow),
+                            style = InkTypography.Eyebrow,
+                            color = InkGlassTokens.Accent,
+                        )
+                        Text(
+                            stringResource(MR.strings.ml_g3_more_title),
+                            style = InkTypography.Display,
+                            color = InkGlassTokens.TextPrimary,
+                        )
                     }
                     InkGlassIconButton(
                         imageVector = Icons.Outlined.Settings,
@@ -119,11 +127,11 @@ fun MoreScreen(
                 }
             }
 
-            item(key = "more_modes_title") { MoreSectionLabel("Режимы") }
+            item(key = "more_modes_title") { MoreSectionLabel(stringResource(MR.strings.ml_g3_more_section_modes)) }
             item(key = "downloaded_only") {
                 MoreToggleRow(
-                    title = "Только скачанное",
-                    subtitle = "Показывать только загруженные тайтлы",
+                    title = stringResource(MR.strings.ml_g3_more_downloaded_only),
+                    subtitle = stringResource(MR.strings.ml_g3_more_downloaded_only_summary),
                     icon = Icons.Outlined.CloudOff,
                     checked = downloadedOnly,
                     onClick = { onDownloadedOnlyChange(!downloadedOnly) },
@@ -131,8 +139,8 @@ fun MoreScreen(
             }
             item(key = "incognito") {
                 MoreToggleRow(
-                    title = "Инкогнито",
-                    subtitle = "Не сохранять историю чтения",
+                    title = stringResource(MR.strings.ml_g3_more_incognito),
+                    subtitle = stringResource(MR.strings.ml_g3_more_incognito_summary),
                     icon = ImageVector.vectorResource(R.drawable.ic_glasses_24dp),
                     checked = incognitoMode,
                     onClick = { onIncognitoModeChange(!incognitoMode) },
@@ -140,11 +148,14 @@ fun MoreScreen(
             }
 
             item(key = "more_library_title") {
-                MoreSectionLabel("Библиотека", Modifier.padding(top = InkGlassTokens.Space12))
+                MoreSectionLabel(
+                    stringResource(MR.strings.label_library),
+                    Modifier.padding(top = InkGlassTokens.Space12),
+                )
             }
             item(key = "downloads") {
                 MoreActionRow(
-                    title = "Очередь загрузок",
+                    title = stringResource(MR.strings.ml_g3_more_download_queue),
                     subtitle = downloadSummary,
                     icon = Icons.Outlined.GetApp,
                     onClick = onClickDownloadQueue,
@@ -152,52 +163,55 @@ fun MoreScreen(
             }
             item(key = "categories") {
                 MoreActionRow(
-                    title = "Категории",
-                    subtitle = "Организация вашей коллекции",
+                    title = stringResource(MR.strings.categories),
+                    subtitle = stringResource(MR.strings.ml_g3_more_categories_summary),
                     icon = Icons.AutoMirrored.Outlined.Label,
                     onClick = onClickCategories,
                 )
             }
             item(key = "stats") {
                 MoreActionRow(
-                    title = "Статистика",
-                    subtitle = "Чтение, главы и прогресс",
+                    title = stringResource(MR.strings.label_stats),
+                    subtitle = stringResource(MR.strings.ml_g3_more_stats_summary),
                     icon = Icons.Outlined.QueryStats,
                     onClick = onClickStats,
                 )
             }
             item(key = "storage") {
                 MoreActionRow(
-                    title = "Данные и хранилище",
-                    subtitle = "Загрузки, резервные копии и кэш",
+                    title = stringResource(MR.strings.ml_g3_more_data_storage),
+                    subtitle = stringResource(MR.strings.ml_g3_more_data_storage_summary),
                     icon = Icons.Outlined.Storage,
                     onClick = onClickDataAndStorage,
                 )
             }
 
             item(key = "more_app_title") {
-                MoreSectionLabel("Приложение", Modifier.padding(top = InkGlassTokens.Space12))
+                MoreSectionLabel(
+                    stringResource(MR.strings.ml_g3_more_section_app),
+                    Modifier.padding(top = InkGlassTokens.Space12),
+                )
             }
             item(key = "settings") {
                 MoreActionRow(
-                    title = "Настройки",
-                    subtitle = "Читалка, внешний вид и источники",
+                    title = stringResource(MR.strings.label_settings),
+                    subtitle = stringResource(MR.strings.ml_g3_more_settings_summary),
                     icon = Icons.Outlined.Settings,
                     onClick = onClickSettings,
                 )
             }
             item(key = "about") {
                 MoreActionRow(
-                    title = "О приложении",
-                    subtitle = "Версия и лицензии",
+                    title = stringResource(MR.strings.ml_g3_more_about),
+                    subtitle = stringResource(MR.strings.ml_g3_more_about_summary),
                     icon = Icons.Outlined.Info,
                     onClick = onClickAbout,
                 )
             }
             item(key = "support") {
                 MoreActionRow(
-                    title = "Поддержать проект",
-                    subtitle = "Поддержать исходный проект",
+                    title = stringResource(MR.strings.ml_g3_more_support),
+                    subtitle = stringResource(MR.strings.ml_g3_more_support_summary),
                     icon = Icons.Default.VolunteerActivism,
                     onClick = onClickSupport,
                 )
@@ -228,7 +242,7 @@ private fun MoreToggleRow(
         title = title,
         subtitle = subtitle,
         icon = icon,
-        status = if (checked) "Включено" else "Выключено",
+        status = if (checked) stringResource(MR.strings.on) else stringResource(MR.strings.off),
         statusAccent = checked,
         onClick = onClick,
     )

@@ -312,7 +312,11 @@ private fun FilterToggle(
                 color = InkGlassTokens.TextPrimary,
             )
             if (state == TriState.ENABLED_NOT) {
-                Text("ИСКЛЮЧИТЬ", style = InkTypography.Eyebrow, color = InkGlassTokens.Accent)
+                Text(
+                    stringResource(MR.strings.ml_g2_filter_excluded),
+                    style = InkTypography.Eyebrow,
+                    color = InkGlassTokens.Accent,
+                )
             }
         }
     }

@@ -45,8 +45,8 @@ object SettingsBrowseScreen : SearchableSettings {
                     ),
                     Preference.PreferenceItem.SwitchPreference(
                         preference = sourcePreferences.autoUpdateExtensions,
-                        title = "Автообновление расширений",
-                        subtitle = "Ставить новые версии в фоне — сломавшиеся сайты чинятся сами",
+                        title = stringResource(MR.strings.ml_g3_ext_auto_update),
+                        subtitle = stringResource(MR.strings.ml_g3_ext_auto_update_summary),
                         onValueChanged = {
                             ExtensionAutoUpdateJob.setupTask(context, enabled = it)
                             true

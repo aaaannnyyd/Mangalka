@@ -338,7 +338,11 @@ private fun CategorySelectionRow(
                 color = InkGlassTokens.TextPrimary,
             )
             if (excluded) {
-                Text("ИСКЛЮЧИТЬ", style = InkTypography.Eyebrow, color = InkGlassTokens.Accent)
+                Text(
+                    stringResource(MR.strings.ml_g1_exclude_badge),
+                    style = InkTypography.Eyebrow,
+                    color = InkGlassTokens.Accent,
+                )
             }
         }
     }

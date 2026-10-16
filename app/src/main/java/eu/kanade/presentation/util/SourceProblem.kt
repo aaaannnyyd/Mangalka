@@ -4,8 +4,10 @@ import android.content.Context
 import eu.kanade.tachiyomi.network.HttpException
 import eu.kanade.tachiyomi.util.system.isOnline
 import kotlinx.serialization.SerializationException
+import tachiyomi.core.common.i18n.stringResource
 import tachiyomi.data.source.NoResultsException
 import tachiyomi.domain.source.model.SourceNotInstalledException
+import tachiyomi.i18n.MR
 import java.io.IOException
 import java.io.InterruptedIOException
 import java.net.ConnectException
@@ -57,51 +59,64 @@ fun Throwable.toSourceProblem(): SourceProblem {
     val http = chain.firstNotNullOfOrNull { it as? HttpException }
     return when {
         chain.any { it is UnknownHostException || it is ConnectException } && !context.isOnline() ->
-            SourceProblem(SourceProblem.Kind.Offline, "Нет интернета", "Проверьте подключение и повторите.")
+            SourceProblem(
+                SourceProblem.Kind.Offline,
+                context.stringResource(MR.strings.ml_g4_problem_offline_title),
+                context.stringResource(MR.strings.ml_g4_problem_offline_hint),
+            )
         chain.any { it is SocketTimeoutException || it is InterruptedIOException } ->
-            SourceProblem(SourceProblem.Kind.Timeout, "Сайт не ответил вовремя", "Повторите чуть позже.")
+            SourceProblem(
+                SourceProblem.Kind.Timeout,
+                context.stringResource(MR.strings.ml_g4_problem_timeout_title),
+                context.stringResource(MR.strings.ml_g4_problem_timeout_hint),
+            )
         chain.any { it::class.simpleName == "CloudflareBypassException" } ->
             SourceProblem(
                 SourceProblem.Kind.Blocked,
-                "Сайт закрылся защитой от ботов",
-                "Откройте его в WebView, пройдите проверку и вернитесь.",
+                context.stringResource(MR.strings.ml_g4_problem_bot_protection_title),
+                context.stringResource(MR.strings.ml_g4_problem_bot_protection_hint),
             )
         http != null -> when (http.code) {
             401, 403, 429 -> SourceProblem(
                 SourceProblem.Kind.Blocked,
-                "Сайт не пускает приложение (ошибка ${http.code})",
-                "Часто чинится обновлением расширения или входом через WebView.",
+                context.stringResource(MR.strings.ml_g4_problem_blocked_title, http.code),
+                context.stringResource(MR.strings.ml_g4_problem_blocked_hint),
             )
             404, 410 -> SourceProblem(
                 SourceProblem.Kind.NotFound,
-                "На сайте этого больше нет",
-                "Тайтл или глава удалены — попробуйте другой источник.",
+                context.stringResource(MR.strings.ml_g4_problem_not_found_title),
+                context.stringResource(MR.strings.ml_g4_problem_not_found_hint),
             )
             in 500..599 -> SourceProblem(
                 SourceProblem.Kind.ServerDown,
-                "Сайт сейчас не работает (ошибка ${http.code})",
-                "Подождите или читайте в другом источнике.",
+                context.stringResource(MR.strings.ml_g4_problem_server_down_title, http.code),
+                context.stringResource(MR.strings.ml_g4_problem_server_down_hint),
             )
-            else -> SourceProblem(SourceProblem.Kind.Other, "Ошибка сайта ${http.code}", "Проверьте сайт в WebView.")
+            else -> SourceProblem(
+                SourceProblem.Kind.Other,
+                context.stringResource(MR.strings.ml_g4_problem_http_other_title, http.code),
+                context.stringResource(MR.strings.ml_g4_problem_http_other_hint),
+            )
         }
         chain.any { it is UnknownHostException || it is ConnectException || it is SSLException } ->
             SourceProblem(
                 SourceProblem.Kind.Unreachable,
-                "Сайт недоступен",
-                "Возможно, сменился адрес или он заблокирован в вашей сети.",
+                context.stringResource(MR.strings.ml_g4_problem_unreachable_title),
+                context.stringResource(MR.strings.ml_g4_problem_unreachable_hint),
             )
         chain.any { it.looksLikeParsingFailure() } ->
             SourceProblem(
                 SourceProblem.Kind.SourceChanged,
-                "Сайт изменился, расширение его не понимает",
-                "Обычно помогает обновление расширения.",
+                context.stringResource(MR.strings.ml_g4_problem_source_changed_title),
+                context.stringResource(MR.strings.ml_g4_problem_source_changed_hint),
             )
         isExtensionReportedFailure() ->
             SourceProblem(
                 SourceProblem.Kind.SourceError,
-                "Источник не смог загрузить данные",
-                message?.takeIf { it.isNotBlank() }?.let { "Расширение сообщает: $it" }
-                    ?: "Попробуйте обновить расширение или открыть другой источник.",
+                context.stringResource(MR.strings.ml_g4_problem_source_error_title),
+                message?.takeIf { it.isNotBlank() }
+                    ?.let { context.stringResource(MR.strings.ml_g4_problem_source_error_message, it) }
+                    ?: context.stringResource(MR.strings.ml_g4_problem_source_error_hint),
             )
         else -> SourceProblem(SourceProblem.Kind.Other, plainMessage(), "")
     }

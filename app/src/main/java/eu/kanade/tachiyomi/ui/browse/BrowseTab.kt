@@ -76,8 +76,12 @@ data object BrowseTab : Tab {
             searchQuery = extensionsSearchQuery,
             onChangeSearchQuery = extensionsViewModel::search,
             inkStyle = true,
-            inkTitleOverride = "Каталог",
-            inkTabTitleOverrides = listOf("Источники", "Расширения", "Миграция"),
+            inkTitleOverride = stringResource(MR.strings.browse),
+            inkTabTitleOverrides = listOf(
+                stringResource(MR.strings.label_sources),
+                stringResource(MR.strings.label_extensions),
+                stringResource(MR.strings.ml_g1_browse_tab_migration),
+            ),
         )
         LaunchedEffect(Unit) {
             switchToExtensionTabChannel.receiveAsFlow()

@@ -113,7 +113,7 @@ object AboutScreen : Screen() {
                                 widget = {
                                     AnimatedVisibility(visible = isCheckingUpdates) {
                                         androidx.compose.material3.Text(
-                                            text = "ПРОВЕРКА",
+                                            text = stringResource(MR.strings.ml_g4_about_checking),
                                             style = InkTypography.Eyebrow,
                                             color = InkGlassTokens.Accent,
                                         )
@@ -155,14 +155,14 @@ object AboutScreen : Screen() {
 
                     item {
                         TextPreferenceWidget(
-                            title = "Автор",
+                            title = stringResource(MR.strings.author),
                             subtitle = "anykebobd",
                         )
                     }
 
                     item {
                         TextPreferenceWidget(
-                            title = "Канал обновлений",
+                            title = stringResource(MR.strings.ml_g4_about_update_channel),
                             subtitle = "t.me/$UPDATE_CHANNEL",
                             onPreferenceClick = { uriHandler.openUri("https://t.me/$UPDATE_CHANNEL") },
                         )
@@ -170,7 +170,7 @@ object AboutScreen : Screen() {
 
                     item {
                         TextPreferenceWidget(
-                            title = "Исходный код",
+                            title = stringResource(MR.strings.ml_g4_about_source_code),
                             subtitle = "github.com/aaaannnyyd/Mangalka",
                             onPreferenceClick = { uriHandler.openUri("https://github.com/aaaannnyyd/Mangalka") },
                         )
@@ -178,8 +178,8 @@ object AboutScreen : Screen() {
 
                     item {
                         TextPreferenceWidget(
-                            title = "Исходный проект",
-                            subtitle = "Форк Mihon · Apache-2.0",
+                            title = stringResource(MR.strings.ml_g4_about_upstream),
+                            subtitle = stringResource(MR.strings.ml_g4_about_upstream_summary),
                             onPreferenceClick = { uriHandler.openUri("https://github.com/mihonapp/mihon") },
                         )
                     }

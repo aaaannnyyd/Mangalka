@@ -65,8 +65,8 @@ fun CategoryScreen(
         ) { paddingValues ->
             if (state.isEmpty) {
                 InkEmptyState(
-                    title = "Категорий пока нет",
-                    message = "Создайте категории, чтобы разложить библиотеку по своим полкам.",
+                    title = stringResource(MR.strings.ml_g3_categories_empty_title),
+                    message = stringResource(MR.strings.ml_g3_categories_empty_message),
                     modifier = Modifier
                         .padding(paddingValues)
                         .padding(InkGlassTokens.Space20),

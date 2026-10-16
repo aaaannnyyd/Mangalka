@@ -60,6 +60,7 @@ import mangalka.comments.model.UnifiedComment
 import mangalka.comments.util.countForPage
 import mangalka.comments.util.filterForPage
 import mangalka.comments.util.flattenForDisplay
+import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.InkAccentButton
 import tachiyomi.presentation.core.components.InkGlassButton
 import tachiyomi.presentation.core.components.InkGlassChip
@@ -69,6 +70,8 @@ import tachiyomi.presentation.core.components.InkGlassSurface
 import tachiyomi.presentation.core.components.InkGlassTokens
 import tachiyomi.presentation.core.components.InkLoadingState
 import tachiyomi.presentation.core.components.InkTypography
+import tachiyomi.presentation.core.i18n.pluralStringResource
+import tachiyomi.presentation.core.i18n.stringResource
 
 sealed interface CommentsUiState {
     data object Idle : CommentsUiState
@@ -114,7 +117,7 @@ fun MangaCommentsSection(
 
             when (state) {
                 CommentsUiState.Idle -> InkAccentButton(
-                    label = "Загрузить комментарии",
+                    label = stringResource(MR.strings.ml_g1_comments_load),
                     onClick = onRefresh,
                     modifier = Modifier.fillMaxWidth(),
                 )
@@ -122,7 +125,7 @@ fun MangaCommentsSection(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = InkGlassTokens.Space24),
-                    label = "Загружаем комментарии",
+                    label = stringResource(MR.strings.ml_g1_comments_loading),
                 )
                 is CommentsUiState.Error -> CommentError(state.message, state.technicalDetail, onRefresh)
                 is CommentsUiState.Loaded -> CommentPreview(state, onShowAll)
@@ -139,7 +142,7 @@ private fun CommentPreview(
     val comments = remember(state.page.comments) { state.page.comments.flattenForDisplay() }
     if (comments.isEmpty()) {
         Text(
-            text = "Комментариев пока нет.",
+            text = stringResource(MR.strings.ml_g1_comments_empty),
             style = InkTypography.Body,
             color = InkGlassTokens.TextSecondary,
         )
@@ -163,7 +166,7 @@ private fun CommentPreview(
     if (onShowAll != null && (comments.size > PREVIEW_LIMIT || state.page.hasNextPage)) {
         Spacer(Modifier.height(InkGlassTokens.Space4))
         InkAccentButton(
-            label = "Открыть обсуждение (${commentCount(state.page)})",
+            label = stringResource(MR.strings.ml_g1_comments_open_discussion, commentCount(state.page)),
             onClick = onShowAll,
             modifier = Modifier.fillMaxWidth(),
         )
@@ -210,7 +213,11 @@ fun MangaCommentsSheet(
                 horizontalArrangement = Arrangement.spacedBy(InkGlassTokens.Space12),
             ) {
                 Column(Modifier.weight(1f)) {
-                    Text("КОММЕНТАРИИ ГЛАВЫ", style = InkTypography.Eyebrow, color = InkGlassTokens.Accent)
+                    Text(
+                        stringResource(MR.strings.ml_g1_comments_chapter_eyebrow),
+                        style = InkTypography.Eyebrow,
+                        color = InkGlassTokens.Accent,
+                    )
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(InkGlassTokens.Space8),
@@ -237,7 +244,7 @@ fun MangaCommentsSheet(
                     }
                     loaded?.providerName?.let { provider ->
                         Text(
-                            text = "Источник · $provider",
+                            text = stringResource(MR.strings.ml_g1_comments_source, provider),
                             style = InkTypography.BodySmall,
                             color = InkGlassTokens.TextTertiary,
                         )
@@ -245,12 +252,12 @@ fun MangaCommentsSheet(
                 }
                 InkGlassIconButton(
                     imageVector = Icons.Outlined.Refresh,
-                    contentDescription = "Обновить комментарии",
+                    contentDescription = stringResource(MR.strings.ml_g1_comments_refresh),
                     onClick = onRefresh,
                 )
                 InkGlassIconButton(
                     imageVector = Icons.Outlined.Close,
-                    contentDescription = "Закрыть",
+                    contentDescription = stringResource(MR.strings.action_close),
                     onClick = onDismissRequest,
                 )
             }
@@ -268,12 +275,12 @@ fun MangaCommentsSheet(
                     horizontalArrangement = Arrangement.spacedBy(InkGlassTokens.Space8),
                 ) {
                     InkGlassChip(
-                        label = "Популярные",
+                        label = stringResource(MR.strings.ml_g1_comments_sort_top),
                         selected = sort == CommentSort.TOP,
                         onClick = { onSortChanged?.invoke(CommentSort.TOP) },
                     )
                     InkGlassChip(
-                        label = "Новые",
+                        label = stringResource(MR.strings.ml_g1_comments_sort_newest),
                         selected = sort == CommentSort.NEWEST,
                         onClick = { onSortChanged?.invoke(CommentSort.NEWEST) },
                     )
@@ -287,13 +294,13 @@ fun MangaCommentsSheet(
                         .padding(InkGlassTokens.Space24),
                     contentAlignment = Alignment.Center,
                 ) {
-                    InkAccentButton("Загрузить комментарии", onRefresh)
+                    InkAccentButton(stringResource(MR.strings.ml_g1_comments_load), onRefresh)
                 }
                 CommentsUiState.Loading -> InkLoadingState(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(InkGlassTokens.Space32),
-                    label = "Загружаем комментарии",
+                    label = stringResource(MR.strings.ml_g1_comments_loading),
                 )
                 is CommentsUiState.Error -> Box(Modifier.padding(InkGlassTokens.Space20)) {
                     CommentError(state.message, state.technicalDetail, onRefresh)
@@ -390,13 +397,17 @@ fun ReaderCommentsOverlay(
                     ) {
                         Column(Modifier.weight(1f)) {
                             Text(
-                                text = pageFilter?.let { "КОММЕНТАРИИ · СТР. $it" } ?: "КОММЕНТАРИИ ГЛАВЫ",
+                                text = if (pageFilter != null) {
+                                    stringResource(MR.strings.ml_g1_comments_page_eyebrow, pageFilter)
+                                } else {
+                                    stringResource(MR.strings.ml_g1_comments_chapter_eyebrow)
+                                },
                                 style = InkTypography.Eyebrow,
                                 color = InkGlassTokens.Accent,
                             )
                             loaded?.providerName?.let {
                                 Text(
-                                    text = "Источник · $it",
+                                    text = stringResource(MR.strings.ml_g1_comments_source, it),
                                     style = InkTypography.BodySmall,
                                     color = InkGlassTokens.TextTertiary,
                                 )
@@ -404,19 +415,23 @@ fun ReaderCommentsOverlay(
                         }
                         if (pageCommentsSupported && loaded != null) {
                             InkGlassChip(
-                                label = pageFilter?.let { "Вся глава" } ?: "Стр. $currentPage",
+                                label = if (pageFilter != null) {
+                                    stringResource(MR.strings.ml_g1_comments_whole_chapter)
+                                } else {
+                                    stringResource(MR.strings.ml_g1_comments_page_short, currentPage)
+                                },
                                 selected = pageFilter != null,
                                 onClick = onShowWholeChapter,
                             )
                         }
                         InkGlassIconButton(
                             imageVector = Icons.Outlined.Refresh,
-                            contentDescription = "Обновить комментарии",
+                            contentDescription = stringResource(MR.strings.ml_g1_comments_refresh),
                             onClick = onRefresh,
                         )
                         InkGlassIconButton(
                             imageVector = Icons.Outlined.Close,
-                            contentDescription = "Закрыть комментарии",
+                            contentDescription = stringResource(MR.strings.ml_g1_comments_close),
                             onClick = onClose,
                         )
                     }
@@ -428,13 +443,13 @@ fun ReaderCommentsOverlay(
                                 .padding(InkGlassTokens.Space20),
                             contentAlignment = Alignment.Center,
                         ) {
-                            InkAccentButton("Загрузить комментарии", onRefresh)
+                            InkAccentButton(stringResource(MR.strings.ml_g1_comments_load), onRefresh)
                         }
                         CommentsUiState.Loading -> InkLoadingState(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(InkGlassTokens.Space24),
-                            label = "Загружаем комментарии",
+                            label = stringResource(MR.strings.ml_g1_comments_loading),
                         )
                         is CommentsUiState.Error -> Box(Modifier.padding(InkGlassTokens.Space16)) {
                             CommentError(state.message, state.technicalDetail, onRefresh)
@@ -466,7 +481,7 @@ private fun CommentTreeList(
     }
     if (filteredRoots.isEmpty()) {
         Text(
-            text = "Комментариев пока нет.",
+            text = stringResource(MR.strings.ml_g1_comments_empty),
             modifier = Modifier.padding(InkGlassTokens.Space20),
             style = InkTypography.Body,
             color = InkGlassTokens.TextSecondary,
@@ -510,7 +525,11 @@ private fun CommentTreeList(
         if (page.hasNextPage && onLoadMore != null) {
             item(key = "comments_load_more") {
                 InkGlassButton(
-                    label = if (loadingMore) "Загружаем…" else "Загрузить ещё",
+                    label = if (loadingMore) {
+                        stringResource(MR.strings.ml_g1_comments_loading_more)
+                    } else {
+                        stringResource(MR.strings.ml_g1_comments_load_more)
+                    },
                     onClick = onLoadMore,
                     enabled = !loadingMore,
                     modifier = Modifier.fillMaxWidth(),
@@ -562,8 +581,9 @@ private fun CommentRow(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(InkGlassTokens.Space4),
                         ) {
+                            val anonymous = stringResource(MR.strings.ml_g1_comments_anonymous)
                             Text(
-                                text = comment.author.name.ifBlank { "Аноним" },
+                                text = comment.author.name.ifBlank { anonymous },
                                 style = InkTypography.TitleSmall,
                                 color = InkGlassTokens.TextPrimary,
                                 maxLines = 1,
@@ -580,10 +600,14 @@ private fun CommentRow(
                                 Text("PIN", style = InkTypography.Eyebrow, color = InkGlassTokens.Warning)
                             }
                         }
+                        val pageLabel = comment.pageNumber?.let {
+                            stringResource(MR.strings.ml_g1_comments_meta_page, it)
+                        }
+                        val editedLabel = stringResource(MR.strings.ml_g1_comments_meta_edited)
                         val metadata = buildList {
                             comment.createdAt?.let { add(relativeTime(it)) }
-                            comment.pageNumber?.let { add("стр. $it") }
-                            if (CommentFlag.EDITED in comment.flags) add("изменён")
+                            pageLabel?.let(::add)
+                            if (CommentFlag.EDITED in comment.flags) add(editedLabel)
                         }.joinToString(" · ")
                         if (metadata.isNotBlank()) {
                             Text(
@@ -632,7 +656,7 @@ private fun CommentRow(
                     if (comment.votes.up == null && comment.votes.down == null) {
                         comment.votes.effectiveScore?.let { score ->
                             Text(
-                                "Рейтинг $score",
+                                stringResource(MR.strings.ml_g1_comments_rating, score),
                                 style = InkTypography.BodySmall,
                                 color = InkGlassTokens.TextSecondary,
                             )
@@ -641,9 +665,9 @@ private fun CommentRow(
                     if (onToggleCollapse != null) {
                         Text(
                             text = if (isCollapsed) {
-                                "Ответы (${comment.descendantCount})"
+                                stringResource(MR.strings.ml_g1_comments_replies, comment.descendantCount)
                             } else {
-                                "Свернуть ветку"
+                                stringResource(MR.strings.ml_g1_comments_collapse_thread)
                             },
                             style = InkTypography.Label,
                             color = InkGlassTokens.Accent,
@@ -745,8 +769,9 @@ private fun SpoilerBlock(node: CommentNode.Spoiler, key: String) {
         onClick = { revealed = !revealed },
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(InkGlassTokens.Space8)) {
+            val spoilerLabel = stringResource(MR.strings.ml_g1_comments_spoiler)
             Text(
-                text = node.title?.takeIf { it.isNotBlank() } ?: "Спойлер",
+                text = node.title?.takeIf { it.isNotBlank() } ?: spoilerLabel,
                 style = InkTypography.Label,
                 color = InkGlassTokens.Accent,
             )
@@ -754,7 +779,11 @@ private fun SpoilerBlock(node: CommentNode.Spoiler, key: String) {
                 CommentBody(node.children, "$key-body")
             }
             if (!revealed) {
-                Text("Нажмите, чтобы показать", style = InkTypography.BodySmall, color = InkGlassTokens.TextTertiary)
+                Text(
+                    stringResource(MR.strings.ml_g1_comments_tap_to_reveal),
+                    style = InkTypography.BodySmall,
+                    color = InkGlassTokens.TextTertiary,
+                )
             }
         }
     }
@@ -841,19 +870,31 @@ private fun CommentsHeader(
             tint = InkGlassTokens.Accent,
         )
         Column(Modifier.weight(1f)) {
-            Text("КОММЕНТАРИИ", style = InkTypography.Eyebrow, color = InkGlassTokens.Accent)
             Text(
-                text = count?.let { "$it сообщений" } ?: "Обсуждение тайтла",
+                stringResource(MR.strings.ml_g1_comments_eyebrow),
+                style = InkTypography.Eyebrow,
+                color = InkGlassTokens.Accent,
+            )
+            Text(
+                text = if (count != null) {
+                    pluralStringResource(MR.plurals.ml_g1_comments_messages, count, count)
+                } else {
+                    stringResource(MR.strings.ml_g1_comments_title_discussion)
+                },
                 style = InkTypography.TitleSmall,
                 color = InkGlassTokens.TextPrimary,
             )
             providerName?.let {
-                Text("Источник · $it", style = InkTypography.BodySmall, color = InkGlassTokens.TextTertiary)
+                Text(
+                    stringResource(MR.strings.ml_g1_comments_source, it),
+                    style = InkTypography.BodySmall,
+                    color = InkGlassTokens.TextTertiary,
+                )
             }
         }
         InkGlassIconButton(
             imageVector = Icons.Outlined.Refresh,
-            contentDescription = "Обновить комментарии",
+            contentDescription = stringResource(MR.strings.ml_g1_comments_refresh),
             onClick = onRefresh,
         )
     }
@@ -863,7 +904,7 @@ private fun CommentsHeader(
 private fun CommentError(message: String?, technicalDetail: String?, onRetry: () -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(InkGlassTokens.Space12)) {
         Text(
-            text = "Не удалось загрузить комментарии",
+            text = stringResource(MR.strings.ml_g1_comments_load_failed),
             style = InkTypography.TitleSmall,
             color = InkGlassTokens.TextPrimary,
         )
@@ -873,7 +914,7 @@ private fun CommentError(message: String?, technicalDetail: String?, onRetry: ()
         technicalDetail?.takeIf { it.isNotBlank() }?.let {
             Text(it, style = InkTypography.Eyebrow, color = InkGlassTokens.TextTertiary)
         }
-        InkAccentButton("Повторить", onRetry)
+        InkAccentButton(stringResource(MR.strings.action_retry), onRetry)
     }
 }
 

@@ -144,7 +144,12 @@ class BackupRestorer(
             } catch (error: Exception) {
                 kotlinx.coroutines.currentCoroutineContext().ensureActive()
                 logcat(LogPriority.ERROR, error)
-                errors.add(Date() to "Не удалось восстановить журнал чтения: ${error.message}")
+                errors.add(
+                    Date() to context.stringResource(
+                        MR.strings.ml_g3_restore_reading_activity_failed,
+                        error.message.orEmpty(),
+                    ),
+                )
             }
         }
     }

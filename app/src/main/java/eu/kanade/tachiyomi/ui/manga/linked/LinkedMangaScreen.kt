@@ -38,6 +38,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import dev.icerock.moko.resources.StringResource
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
@@ -65,6 +66,7 @@ import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import tachiyomi.core.common.i18n.stringResource
 import tachiyomi.core.common.util.lang.launchNonCancellable
 import tachiyomi.core.common.util.lang.withIOContext
 import tachiyomi.domain.manga.interactor.GetManga
@@ -72,6 +74,7 @@ import tachiyomi.domain.manga.model.LinkedMangaReference
 import tachiyomi.domain.manga.model.Manga
 import tachiyomi.domain.manga.model.linkedVersions
 import tachiyomi.domain.source.service.SourceManager
+import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.InkAccentButton
 import tachiyomi.presentation.core.components.InkAlertDialog
 import tachiyomi.presentation.core.components.InkEmptyState
@@ -84,6 +87,7 @@ import tachiyomi.presentation.core.components.InkGlassTokens
 import tachiyomi.presentation.core.components.InkLoadingState
 import tachiyomi.presentation.core.components.InkTypography
 import tachiyomi.presentation.core.components.material.Scaffold
+import tachiyomi.presentation.core.i18n.stringResource
 
 class LinkedMangaScreen(private val mangaId: Long) : Screen() {
 
@@ -99,9 +103,13 @@ class LinkedMangaScreen(private val mangaId: Long) : Screen() {
             model.events.collectLatest { result ->
                 context.toast(
                     if (result.read + result.bookmarks > 0) {
-                        "Источник сменён · перенесено прочитанных: ${result.read}, закладок: ${result.bookmarks}"
+                        context.stringResource(
+                            MR.strings.ml_g2_source_switched_progress,
+                            result.read,
+                            result.bookmarks,
+                        )
                     } else {
-                        "Источник сменён"
+                        context.stringResource(MR.strings.ml_g2_source_switched)
                     },
                 )
                 navigator.pop()
@@ -128,9 +136,9 @@ class LinkedMangaScreen(private val mangaId: Long) : Screen() {
                 title = {
                     Text(
                         when {
-                            confirmation.unlink -> "Убрать связь?"
-                            confirmation.version.current -> "Сделать основной?"
-                            else -> "Перейти на эту версию?"
+                            confirmation.unlink -> stringResource(MR.strings.ml_g2_unlink_title)
+                            confirmation.version.current -> stringResource(MR.strings.ml_g2_make_primary_title)
+                            else -> stringResource(MR.strings.ml_g2_switch_version_title)
                         },
                     )
                 },
@@ -138,27 +146,27 @@ class LinkedMangaScreen(private val mangaId: Long) : Screen() {
                     Text(
                         when {
                             confirmation.unlink ->
-                                "${confirmation.version.sourceName} перестанет быть версией этого тайтла. " +
-                                    "Главы, загрузки и история останутся."
+                                stringResource(MR.strings.ml_g2_unlink_message, confirmation.version.sourceName)
                             confirmation.version.current ->
-                                "${confirmation.version.sourceName} станет основной версией в библиотеке."
+                                stringResource(MR.strings.ml_g2_make_primary_message, confirmation.version.sourceName)
                             else ->
-                                "${confirmation.version.sourceName} станет основной версией. Отметки о прочтении и " +
-                                    "закладки перенесём для совпавших глав, остальное не трогаем."
+                                stringResource(MR.strings.ml_g2_switch_version_message, confirmation.version.sourceName)
                         },
                     )
                 },
                 confirmButton = {
                     InkAccentButton(
                         label = when {
-                            confirmation.unlink -> "Убрать связь"
-                            confirmation.version.current -> "Сделать основной"
-                            else -> "Перейти"
+                            confirmation.unlink -> stringResource(MR.strings.ml_g2_unlink)
+                            confirmation.version.current -> stringResource(MR.strings.ml_g2_make_primary)
+                            else -> stringResource(MR.strings.ml_g2_switch)
                         },
                         onClick = model::confirmOperation,
                     )
                 },
-                dismissButton = { InkGlassButton("Отмена", model::dismissConfirmation) },
+                dismissButton = {
+                    InkGlassButton(stringResource(MR.strings.action_cancel), model::dismissConfirmation)
+                },
             )
         }
     }
@@ -257,7 +265,7 @@ class LinkedMangaScreen(private val mangaId: Long) : Screen() {
                     if (confirmation.unlink) getManga.await(mangaId)?.let { load(it) }
                 } catch (error: Exception) {
                     if (error is CancellationException) throw error
-                    state.update { it.copy(error = "Источник не ответил или недоступен. Попробуйте ещё раз.") }
+                    state.update { it.copy(error = MR.strings.ml_g2_source_unavailable) }
                 } finally {
                     state.update { it.copy(busy = false) }
                 }
@@ -274,7 +282,7 @@ class LinkedMangaScreen(private val mangaId: Long) : Screen() {
         val versions: List<Version> = emptyList(),
         val loading: Boolean = true,
         val busy: Boolean = false,
-        val error: String? = null,
+        val error: StringResource? = null,
         val confirmation: Confirmation? = null,
     )
 
@@ -291,7 +299,7 @@ class LinkedMangaScreen(private val mangaId: Long) : Screen() {
     data class Confirmation(val version: Version, val unlink: Boolean)
 
     private companion object {
-        const val LOAD_ERROR = "Не удалось загрузить версии"
+        val LOAD_ERROR = MR.strings.ml_g2_versions_load_error
     }
 }
 
@@ -308,7 +316,7 @@ fun LinkedMangaEntry(versionCount: Int, onClick: () -> Unit, modifier: Modifier 
     ) {
         Icon(Icons.Outlined.Link, null, tint = InkGlassTokens.Accent, modifier = Modifier.size(InkGlassTokens.Space20))
         Text(
-            "Версий на других источниках: ${versionCount - 1}",
+            stringResource(MR.strings.ml_g2_other_versions_count, versionCount - 1),
             style = InkTypography.BodySmall,
             color = InkGlassTokens.TextSecondary,
             modifier = Modifier.weight(1f),
@@ -335,14 +343,19 @@ private fun LinkedMangaContent(
     Scaffold(
         containerColor = InkGlassTokens.BackgroundPrimary,
         topBar = {
-            InkSettingsTopBar("Версии и источники", navigateUp) {
-                InkGlassIconButton(Icons.Outlined.Search, "Найти другую версию", onSearch, enabled = !state.busy)
+            InkSettingsTopBar(stringResource(MR.strings.ml_g2_versions_and_sources), navigateUp) {
+                InkGlassIconButton(
+                    Icons.Outlined.Search,
+                    stringResource(MR.strings.ml_g2_find_other_version),
+                    onSearch,
+                    enabled = !state.busy,
+                )
             }
         },
     ) { padding ->
         if (state.loading) {
             Box(Modifier.fillMaxSize().padding(padding), contentAlignment = Alignment.Center) {
-                InkLoadingState(label = "Загружаем версии")
+                InkLoadingState(label = stringResource(MR.strings.ml_g2_loading_versions))
             }
             return@Scaffold
         }
@@ -355,22 +368,33 @@ private fun LinkedMangaContent(
                 Column(verticalArrangement = Arrangement.spacedBy(InkGlassTokens.Space4)) {
                     Text(state.title, style = InkTypography.Headline, color = InkGlassTokens.TextPrimary)
                     Text(
-                        if (state.busy) "Переносим прогресс…" else "В библиотеке остаётся только основная версия",
+                        if (state.busy) {
+                            stringResource(MR.strings.ml_g2_transferring_progress)
+                        } else {
+                            stringResource(MR.strings.ml_g2_only_primary_in_library)
+                        },
                         style = InkTypography.BodySmall,
                         color = InkGlassTokens.TextSecondary,
                     )
                 }
             }
             state.error?.let { error ->
-                item { InkErrorState("Что-то пошло не так", error, onRefresh, modifier = Modifier.fillMaxWidth()) }
+                item {
+                    InkErrorState(
+                        stringResource(MR.strings.ml_g2_something_went_wrong),
+                        stringResource(error),
+                        onRefresh,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
             }
             if (state.versions.size <= 1 && state.error == null) {
                 item {
                     InkEmptyState(
-                        "Других версий пока нет",
-                        "Найдите этот тайтл на другом сайте и подтвердите связь.",
+                        stringResource(MR.strings.ml_g2_no_other_versions),
+                        stringResource(MR.strings.ml_g2_no_other_versions_hint),
                         modifier = Modifier.fillMaxWidth(),
-                        actionLabel = "Найти другую версию",
+                        actionLabel = stringResource(MR.strings.ml_g2_find_other_version),
                         onAction = onSearch,
                     )
                 }
@@ -421,8 +445,16 @@ private fun VersionRow(
                     modifier = Modifier.weight(1f, fill = false),
                 )
                 when {
-                    version.preferred -> Text("основная", style = InkTypography.Label, color = InkGlassTokens.Accent)
-                    version.current -> Text("открыта", style = InkTypography.Label, color = InkGlassTokens.TextTertiary)
+                    version.preferred -> Text(
+                        stringResource(MR.strings.ml_g2_badge_primary),
+                        style = InkTypography.Label,
+                        color = InkGlassTokens.Accent,
+                    )
+                    version.current -> Text(
+                        stringResource(MR.strings.ml_g2_badge_opened),
+                        style = InkTypography.Label,
+                        color = InkGlassTokens.TextTertiary,
+                    )
                 }
             }
             Text(
@@ -434,18 +466,22 @@ private fun VersionRow(
             )
             Text(
                 if (version.available) {
-                    "Глав: ${version.chapters} · прочитано: ${version.read}"
+                    stringResource(MR.strings.ml_g2_version_chapters_read, version.chapters, version.read)
                 } else {
-                    "Расширение не установлено или отключено"
+                    stringResource(MR.strings.ml_g2_extension_missing)
                 },
                 style = InkTypography.BodySmall,
                 color = if (version.available) InkGlassTokens.TextSecondary else InkGlassTokens.Warning,
             )
         }
         when {
-            !version.available -> InkGlassButton("Расширения", onRepairSource)
+            !version.available -> InkGlassButton(stringResource(MR.strings.label_extensions), onRepairSource)
             !version.preferred -> InkGlassButton(
-                if (version.current) "Основной" else "Перейти",
+                if (version.current) {
+                    stringResource(MR.strings.ml_g2_primary)
+                } else {
+                    stringResource(MR.strings.ml_g2_switch)
+                },
                 onSwitch,
                 enabled = enabled,
             )
@@ -453,7 +489,7 @@ private fun VersionRow(
         if (!version.current) {
             InkGlassIconButton(
                 Icons.Outlined.LinkOff,
-                "Убрать связь с ${version.sourceName}",
+                stringResource(MR.strings.ml_g2_unlink_from, version.sourceName),
                 onUnlink,
                 enabled = enabled,
             )

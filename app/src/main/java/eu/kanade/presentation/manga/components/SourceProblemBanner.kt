@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import eu.kanade.presentation.util.SourceProblem
 import eu.kanade.tachiyomi.ui.manga.ExtensionFix
+import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.InkAccentButton
 import tachiyomi.presentation.core.components.InkCircularProgress
 import tachiyomi.presentation.core.components.InkGlassButton
@@ -25,6 +26,7 @@ import tachiyomi.presentation.core.components.InkGlassLevel
 import tachiyomi.presentation.core.components.InkGlassSurface
 import tachiyomi.presentation.core.components.InkGlassTokens
 import tachiyomi.presentation.core.components.InkTypography
+import tachiyomi.presentation.core.i18n.stringResource
 
 /** Explains a broken source on manga details and offers the two fixes that usually work. */
 @Composable
@@ -53,16 +55,16 @@ fun SourceProblemBanner(
                     Text(
                         text = when (extensionFix) {
                             ExtensionFix.NoUpdate ->
-                                "Новой версии расширения пока нет. Обычно её выпускают за день-два."
+                                stringResource(MR.strings.ml_g2_extension_no_update)
                             ExtensionFix.Failed ->
-                                "Не получилось обновить расширение. Попробуйте в разделе «Расширения»."
+                                stringResource(MR.strings.ml_g2_extension_update_failed)
                             else -> problem.hint
                         },
                         style = InkTypography.BodySmall,
                         color = InkGlassTokens.TextSecondary,
                     )
                 }
-                InkGlassIconButton(Icons.Outlined.Close, "Скрыть", onDismiss)
+                InkGlassIconButton(Icons.Outlined.Close, stringResource(MR.strings.ml_g2_hide), onDismiss)
             }
             Row(horizontalArrangement = Arrangement.spacedBy(InkGlassTokens.Space8)) {
                 when {
@@ -72,19 +74,23 @@ fun SourceProblemBanner(
                     ) {
                         InkCircularProgress(Modifier.size(InkGlassTokens.Space20))
                         Text(
-                            "Обновляем расширение…",
+                            stringResource(MR.strings.ml_g2_extension_updating),
                             style = InkTypography.BodySmall,
                             color = InkGlassTokens.TextSecondary,
                         )
                     }
                     problem.kind.extensionUpdateMayHelp && extensionFix == ExtensionFix.Idle -> InkAccentButton(
-                        "Обновить расширение",
+                        stringResource(MR.strings.ml_g2_update_extension),
                         onUpdateExtension,
                         icon = Icons.Outlined.SystemUpdateAlt,
                     )
                 }
                 if (extensionFix != ExtensionFix.Working) {
-                    InkGlassButton("Другой источник", onOtherSource, icon = Icons.Outlined.SwapHoriz)
+                    InkGlassButton(
+                        stringResource(MR.strings.ml_g2_other_source),
+                        onOtherSource,
+                        icon = Icons.Outlined.SwapHoriz,
+                    )
                 }
             }
         }

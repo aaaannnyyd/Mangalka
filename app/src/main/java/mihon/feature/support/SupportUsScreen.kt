@@ -29,12 +29,14 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import eu.kanade.presentation.components.AppBar
 import eu.kanade.presentation.util.Screen
 import tachiyomi.core.common.Constants
+import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.InkGlassLevel
 import tachiyomi.presentation.core.components.InkGlassSurface
 import tachiyomi.presentation.core.components.InkGlassTokens
 import tachiyomi.presentation.core.components.InkMangaBackdrop
 import tachiyomi.presentation.core.components.InkTypography
 import tachiyomi.presentation.core.components.material.Scaffold
+import tachiyomi.presentation.core.i18n.stringResource
 import tachiyomi.presentation.core.icons.CustomIcons
 import tachiyomi.presentation.core.icons.Discord
 import tachiyomi.presentation.core.icons.OpenCollective
@@ -57,8 +59,8 @@ class SupportUsScreen : Screen() {
                 containerColor = Color.Transparent,
                 topBar = { scrollBehavior ->
                     AppBar(
-                        title = "Поддержка проекта",
-                        subtitle = "Исходный проект и разработчики",
+                        title = stringResource(MR.strings.ml_g3_support_title),
+                        subtitle = stringResource(MR.strings.ml_g3_support_subtitle),
                         navigateUp = navigator::pop,
                         scrollBehavior = scrollBehavior,
                     )
@@ -82,13 +84,12 @@ class SupportUsScreen : Screen() {
                         color = InkGlassTokens.Accent,
                     )
                     Text(
-                        text = "Поддержать основу Мангалкаа",
+                        text = stringResource(MR.strings.ml_g3_support_headline),
                         style = InkTypography.Headline,
                         color = InkGlassTokens.TextPrimary,
                     )
                     Text(
-                        text = "Мангалка основан на открытом коде Mihon. Ссылки ниже ведут на официальные " +
-                            "площадки исходного проекта — поддержка отправляется его команде, а не Мангалкау.",
+                        text = stringResource(MR.strings.ml_g3_support_body),
                         style = InkTypography.Body,
                         color = InkGlassTokens.TextSecondary,
                     )
@@ -97,19 +98,19 @@ class SupportUsScreen : Screen() {
                     SupportItem(
                         icon = CustomIcons.Patreon,
                         title = "Patreon",
-                        subtitle = "Регулярная поддержка upstream-команды",
+                        subtitle = stringResource(MR.strings.ml_g3_support_patreon),
                         onClick = { uriHandler.openUri(Constants.URL_DONATE_PATREON) },
                     )
                     SupportItem(
                         icon = CustomIcons.OpenCollective,
                         title = "Open Collective",
-                        subtitle = "Открытая финансовая поддержка проекта",
+                        subtitle = stringResource(MR.strings.ml_g3_support_opencollective),
                         onClick = { uriHandler.openUri(Constants.URL_DONATE_OPENCOLLECTIVE) },
                     )
                     SupportItem(
                         icon = CustomIcons.Discord,
                         title = "Discord Mihon",
-                        subtitle = "Связаться с upstream-сообществом",
+                        subtitle = stringResource(MR.strings.ml_g3_support_discord),
                         onClick = { uriHandler.openUri(Constants.URL_DISCORD) },
                     )
 
@@ -120,8 +121,7 @@ class SupportUsScreen : Screen() {
                         shadowElevation = 0.dp,
                     ) {
                         Text(
-                            text = "Эта страница сохранена как корректная атрибуция и способ поддержать проект, " +
-                                "на котором построен Мангалка.",
+                            text = stringResource(MR.strings.ml_g3_support_footer),
                             style = InkTypography.BodySmall,
                             color = InkGlassTokens.TextTertiary,
                         )

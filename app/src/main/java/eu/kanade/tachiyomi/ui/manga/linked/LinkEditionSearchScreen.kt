@@ -17,6 +17,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import dev.icerock.moko.resources.StringResource
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
@@ -45,6 +46,7 @@ import tachiyomi.core.common.util.lang.withIOContext
 import tachiyomi.domain.manga.interactor.GetManga
 import tachiyomi.domain.manga.model.Manga
 import tachiyomi.domain.source.service.SourceManager
+import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.InkAccentButton
 import tachiyomi.presentation.core.components.InkAlertDialog
 import tachiyomi.presentation.core.components.InkEmptyState
@@ -53,6 +55,7 @@ import tachiyomi.presentation.core.components.InkGlassTokens
 import tachiyomi.presentation.core.components.InkLoadingState
 import tachiyomi.presentation.core.components.InkTypography
 import tachiyomi.presentation.core.components.material.Scaffold
+import tachiyomi.presentation.core.i18n.stringResource
 
 /** Global search across all sources where tapping a result links it as another edition of [mangaId]. */
 class LinkEditionSearchScreen(
@@ -93,7 +96,7 @@ class LinkEditionSearchScreen(
                         scrollBehavior = scrollBehavior,
                     )
                     Text(
-                        "Выберите ту же мангу на другом сайте. Удержите обложку, чтобы сначала её посмотреть.",
+                        stringResource(MR.strings.ml_g2_link_search_hint),
                         style = InkTypography.BodySmall,
                         color = InkGlassTokens.TextSecondary,
                         modifier = Modifier.fillMaxWidth().padding(
@@ -112,14 +115,14 @@ class LinkEditionSearchScreen(
                 ) {
                     InkEmptyState(
                         title = when {
-                            state.searchQuery.isNullOrBlank() -> "Введите название манги"
-                            state.total == 0 -> "Нет источников для поиска"
-                            else -> "Ничего не нашлось"
+                            state.searchQuery.isNullOrBlank() -> stringResource(MR.strings.ml_g2_enter_manga_title)
+                            state.total == 0 -> stringResource(MR.strings.ml_g2_no_sources_to_search)
+                            else -> stringResource(MR.strings.ml_g2_nothing_found)
                         },
                         message = when {
-                            state.searchQuery.isNullOrBlank() -> "Найдите эту мангу на другом сайте."
-                            state.total == 0 -> "Установите расширение и включите его язык в каталоге."
-                            else -> "Попробуйте другое название, например оригинальное или английское."
+                            state.searchQuery.isNullOrBlank() -> stringResource(MR.strings.ml_g2_find_on_other_site)
+                            state.total == 0 -> stringResource(MR.strings.ml_g2_install_extension_hint)
+                            else -> stringResource(MR.strings.ml_g2_try_other_title)
                         },
                         modifier = Modifier.fillMaxWidth(),
                     )
@@ -139,39 +142,50 @@ class LinkEditionSearchScreen(
         linkState.candidate?.let { candidate ->
             InkAlertDialog(
                 onDismissRequest = model::dismiss,
-                title = { Text("Это та же манга?") },
+                title = { Text(stringResource(MR.strings.ml_g2_same_manga_title)) },
                 text = {
                     Column {
                         Text(
-                            "«${candidate.title}» · ${linkState.sourceName}\n\n" +
-                                "Станет версией «${linkState.title}». В библиотеке останется одна карточка, " +
-                                "переключаться можно в «Версиях и источниках».",
+                            stringResource(
+                                MR.strings.ml_g2_same_manga_message,
+                                candidate.title,
+                                linkState.sourceName,
+                                linkState.title,
+                            ),
                         )
                         if (linkState.linking) {
                             InkLoadingState(
-                                label = "Связываем",
+                                label = stringResource(MR.strings.ml_g2_linking),
                                 modifier = Modifier.padding(top = InkGlassTokens.Space16),
                             )
                         }
                         linkState.error?.let {
                             Text(
-                                it,
+                                stringResource(it),
                                 color = InkGlassTokens.Error,
                                 modifier = Modifier.padding(top = InkGlassTokens.Space12),
                             )
                         }
                     }
                 },
-                confirmButton = { InkAccentButton("Связать", model::link, enabled = !linkState.linking) },
-                dismissButton = { InkGlassButton("Отмена", model::dismiss, enabled = !linkState.linking) },
+                confirmButton = {
+                    InkAccentButton(stringResource(MR.strings.ml_g2_link), model::link, enabled = !linkState.linking)
+                },
+                dismissButton = {
+                    InkGlassButton(
+                        stringResource(MR.strings.action_cancel),
+                        model::dismiss,
+                        enabled = !linkState.linking,
+                    )
+                },
             )
         }
         if (linkState.candidate == null && linkState.error != null) {
             InkAlertDialog(
                 onDismissRequest = model::dismiss,
-                title = { Text("Не получилось") },
-                text = { Text(linkState.error!!) },
-                confirmButton = { InkGlassButton("Понятно", model::dismiss) },
+                title = { Text(stringResource(MR.strings.ml_g2_failed_title)) },
+                text = { Text(stringResource(linkState.error!!)) },
+                confirmButton = { InkGlassButton(stringResource(MR.strings.ml_g2_got_it), model::dismiss) },
             )
         }
     }
@@ -204,7 +218,7 @@ class LinkEditionSearchScreen(
         fun select(manga: Manga) {
             if (state.value.linking) return
             if (manga.id == mangaId) {
-                state.update { it.copy(error = "Это и есть открытая версия. Выберите другой сайт.") }
+                state.update { it.copy(error = MR.strings.ml_g2_already_open_version) }
                 return
             }
             state.update {
@@ -227,7 +241,7 @@ class LinkEditionSearchScreen(
                     eventChannel.send(Unit)
                 } catch (error: Exception) {
                     if (error is CancellationException) throw error
-                    state.update { it.copy(error = "Не удалось сохранить связь. Попробуйте ещё раз.") }
+                    state.update { it.copy(error = MR.strings.ml_g2_link_save_error) }
                 } finally {
                     state.update { it.copy(linking = false) }
                 }
@@ -240,6 +254,6 @@ class LinkEditionSearchScreen(
         val candidate: Manga? = null,
         val sourceName: String = "",
         val linking: Boolean = false,
-        val error: String? = null,
+        val error: StringResource? = null,
     )
 }

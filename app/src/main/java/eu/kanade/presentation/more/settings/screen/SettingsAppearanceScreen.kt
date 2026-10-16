@@ -51,8 +51,8 @@ object SettingsAppearanceScreen : SearchableSettings {
             title = stringResource(MR.strings.pref_category_theme),
             preferenceItems = listOf(
                 Preference.PreferenceItem.TextPreference(
-                    title = "Мангалка Dark",
-                    subtitle = "Графитовый интерфейс · коралловый акцент",
+                    title = stringResource(MR.strings.ml_g4_theme_name),
+                    subtitle = stringResource(MR.strings.ml_g4_theme_summary),
                 ),
                 Preference.PreferenceItem.SwitchPreference(
                     preference = amoledPref,

@@ -110,14 +110,18 @@ private fun LibraryRegularToolbar(
                     cursorBrush = SolidColor(InkGlassTokens.Accent),
                     decorationBox = { inner ->
                         if (searchQuery.isEmpty()) {
-                            Text("Поиск в библиотеке…", style = InkTypography.Body, color = InkGlassTokens.TextTertiary)
+                            Text(
+                                stringResource(MR.strings.ml_g2_search_library),
+                                style = InkTypography.Body,
+                                color = InkGlassTokens.TextTertiary,
+                            )
                         }
                         inner()
                     },
                 )
                 InkGlassIconButton(
                     imageVector = Icons.Outlined.Close,
-                    contentDescription = "Закрыть поиск",
+                    contentDescription = stringResource(MR.strings.ml_g2_close_search),
                     onClick = { onSearchQueryChange(null) },
                 )
             }
@@ -139,7 +143,11 @@ private fun LibraryRegularToolbar(
         horizontalArrangement = Arrangement.spacedBy(InkGlassTokens.Space8),
     ) {
         Column(Modifier.weight(1f)) {
-            Text("МАНГАЛКА", style = InkTypography.Eyebrow, color = InkGlassTokens.Accent)
+            Text(
+                stringResource(MR.strings.ml_g2_brand_eyebrow),
+                style = InkTypography.Eyebrow,
+                color = InkGlassTokens.Accent,
+            )
             Row(verticalAlignment = Alignment.Bottom) {
                 Text(
                     text = title.text,
@@ -160,7 +168,7 @@ private fun LibraryRegularToolbar(
         }
         InkGlassIconButton(
             imageVector = Icons.Outlined.Search,
-            contentDescription = "Поиск",
+            contentDescription = stringResource(MR.strings.ml_g2_search),
             onClick = { onSearchQueryChange("") },
         )
         InkGlassIconButton(

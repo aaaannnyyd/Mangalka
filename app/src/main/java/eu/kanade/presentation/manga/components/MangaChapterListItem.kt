@@ -177,7 +177,7 @@ fun MangaChapterListItem(
                 if (onCommentsClick != null) {
                     InkGlassIconButton(
                         imageVector = Icons.Outlined.Forum,
-                        contentDescription = "Комментарии главы",
+                        contentDescription = stringResource(MR.strings.ml_g3_chapter_comments),
                         onClick = onCommentsClick,
                     )
                 }

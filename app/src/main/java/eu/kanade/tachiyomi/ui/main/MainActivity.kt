@@ -385,7 +385,7 @@ class MainActivity : BaseActivity() {
                             verticalArrangement = Arrangement.spacedBy(InkGlassTokens.Space12),
                         ) {
                             Text(
-                                text = "МАНГАЛКА",
+                                text = stringResource(MR.strings.ml_g4_brand_eyebrow),
                                 color = InkGlassTokens.Accent,
                                 style = InkTypography.Eyebrow,
                             )

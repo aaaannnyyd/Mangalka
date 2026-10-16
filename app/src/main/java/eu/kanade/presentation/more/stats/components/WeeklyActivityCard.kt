@@ -29,9 +29,12 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import eu.kanade.presentation.more.stats.data.StatsData
 import tachiyomi.domain.readingactivity.model.ReadingActivityDay
+import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.InkGlassTokens
 import tachiyomi.presentation.core.components.InkTypography
 import tachiyomi.presentation.core.components.SectionCard
+import tachiyomi.presentation.core.i18n.pluralStringResource
+import tachiyomi.presentation.core.i18n.stringResource
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
@@ -40,20 +43,27 @@ import java.util.Locale
 @Composable
 fun LazyItemScope.WeeklyActivityCard(data: StatsData.Weekly) {
     var selected by rememberSaveable(data.today) { mutableStateOf(data.today.toEpochDay()) }
-    SectionCard(title = "За неделю") {
+    SectionCard(title = stringResource(MR.strings.ml_g4_stats_this_week)) {
         if (data.unavailable) {
-            Text("Журнал чтения недоступен", style = InkTypography.Body, color = InkGlassTokens.TextSecondary)
+            Text(
+                stringResource(MR.strings.ml_g4_stats_log_unavailable),
+                style = InkTypography.Body,
+                color = InkGlassTokens.TextSecondary,
+            )
             return@SectionCard
         }
         Row {
             StatsOverviewItem(
                 title = data.completedChapters.toString(),
-                subtitle = chaptersWord(data.completedChapters),
+                subtitle = pluralStringResource(
+                    MR.plurals.ml_g4_stats_chapters_word,
+                    data.completedChapters.toInt(),
+                ),
                 icon = Icons.Outlined.LocalLibrary,
             )
             StatsOverviewItem(
                 title = formatMeasured(data.durationMillis),
-                subtitle = "чтения",
+                subtitle = stringResource(MR.strings.ml_g4_stats_of_reading),
                 icon = Icons.Outlined.Schedule,
             )
         }
@@ -127,28 +137,37 @@ private fun WeekChart(data: StatsData.Weekly, selectedDay: Long, onSelect: (Long
     }
 }
 
+@Composable
 private fun dayDetails(day: ReadingActivityDay, data: StatsData.Weekly): String {
     val date = day.date.format(DayFormatter).replaceFirstChar { it.titlecase() }
     val since = data.measuredSince
     return when {
-        since == null || day.date.isBefore(since) -> "$date · журнал начнётся с первого чтения"
-        day.durationMillis == 0L && day.completedChapters == 0L -> "$date · не читали"
-        else -> "$date · ${day.completedChapters} ${chaptersWord(day.completedChapters)} · " +
-            formatMeasured(day.durationMillis)
+        since == null || day.date.isBefore(since) ->
+            stringResource(MR.strings.ml_g4_stats_day_log_not_started, date)
+        day.durationMillis == 0L && day.completedChapters == 0L ->
+            stringResource(MR.strings.ml_g4_stats_day_no_reading, date)
+        else -> stringResource(
+            MR.strings.ml_g4_stats_day_details,
+            date,
+            pluralStringResource(
+                MR.plurals.ml_g4_stats_chapters_count,
+                day.completedChapters.toInt(),
+                day.completedChapters,
+            ),
+            formatMeasured(day.durationMillis),
+        )
     }
 }
 
+@Composable
 private fun formatMeasured(millis: Long): String {
-    if (millis in 1L..59_999L) return "< 1 мин"
+    if (millis in 1L..59_999L) return stringResource(MR.strings.ml_g4_duration_under_minute)
     val minutes = millis / 60_000L
-    return if (minutes >= 60) "${minutes / 60} ч ${minutes % 60} мин" else "$minutes мин"
-}
-
-private fun chaptersWord(count: Long): String = when {
-    count % 100 in 11L..14L -> "глав"
-    count % 10 == 1L -> "глава"
-    count % 10 in 2L..4L -> "главы"
-    else -> "глав"
+    return if (minutes >= 60) {
+        stringResource(MR.strings.ml_g4_duration_hours_minutes, minutes / 60, minutes % 60)
+    } else {
+        stringResource(MR.strings.ml_g4_duration_minutes, minutes)
+    }
 }
 
 private val ChartHeight = 120.dp

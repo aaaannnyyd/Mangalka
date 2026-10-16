@@ -14,10 +14,12 @@ import eu.kanade.domain.ui.model.AppTheme
 import eu.kanade.domain.ui.model.ThemeMode
 import eu.kanade.domain.ui.model.setAppCompatDelegateThemeMode
 import mihon.app.di.appGraph
+import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.InkGlassLevel
 import tachiyomi.presentation.core.components.InkGlassSurface
 import tachiyomi.presentation.core.components.InkGlassTokens
 import tachiyomi.presentation.core.components.InkTypography
+import tachiyomi.presentation.core.i18n.stringResource
 
 internal class ThemeStep : OnboardingStep {
 
@@ -43,18 +45,17 @@ internal class ThemeStep : OnboardingStep {
         ) {
             Column {
                 Text(
-                    text = "ТЁМНОЕ ОФОРМЛЕНИЕ",
+                    text = stringResource(MR.strings.ml_g1_theme_eyebrow),
                     style = InkTypography.Eyebrow,
                     color = InkGlassTokens.Accent,
                 )
                 Text(
-                    text = "Мангалка уже настроен",
+                    text = stringResource(MR.strings.ml_g1_theme_title),
                     style = InkTypography.Title,
                     color = InkGlassTokens.TextPrimary,
                 )
                 Text(
-                    text = "Графитовый интерфейс и коралловый акцент применены ко всему приложению. " +
-                        "Параметры экрана можно изменить позже в настройках.",
+                    text = stringResource(MR.strings.ml_g1_theme_body),
                     style = InkTypography.Body,
                     color = InkGlassTokens.TextSecondary,
                 )

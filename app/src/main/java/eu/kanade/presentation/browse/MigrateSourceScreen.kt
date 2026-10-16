@@ -55,11 +55,11 @@ fun MigrateSourceScreen(
     when {
         state.isLoading -> InkLoadingState(
             modifier = Modifier.padding(contentPadding).padding(InkGlassTokens.Space32),
-            label = "Готовим перенос библиотеки",
+            label = stringResource(MR.strings.ml_g4_migrate_loading),
         )
         state.isEmpty -> InkEmptyState(
-            title = "Нечего переносить",
-            message = "Добавьте мангу в библиотеку — после этого здесь появятся источники для миграции.",
+            title = stringResource(MR.strings.ml_g4_migrate_empty_title),
+            message = stringResource(MR.strings.ml_g4_migrate_empty_message),
             modifier = Modifier.padding(contentPadding).padding(InkGlassTokens.ScreenHorizontal),
         )
         else ->

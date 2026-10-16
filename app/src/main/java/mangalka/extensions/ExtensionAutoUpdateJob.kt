@@ -25,7 +25,9 @@ import logcat.LogPriority
 import mihon.app.di.AppGraph
 import mihon.app.di.appGraph
 import mihon.core.metro.metroGraph
+import tachiyomi.core.common.i18n.stringResource
 import tachiyomi.core.common.util.system.logcat
+import tachiyomi.i18n.MR
 import java.util.concurrent.TimeUnit
 
 /**
@@ -90,7 +92,13 @@ class ExtensionAutoUpdateJob(private val context: Context, params: WorkerParamet
     private fun notifyUpdated(names: List<String>) {
         context.notify(ID_AUTO_UPDATED, Notifications.CHANNEL_EXTENSIONS_UPDATE) {
             setSmallIcon(R.drawable.ic_extension_24dp)
-            setContentTitle(if (names.size == 1) "Расширение обновлено" else "Обновлено расширений: ${names.size}")
+            setContentTitle(
+                if (names.size == 1) {
+                    context.stringResource(MR.strings.ml_g4_extension_auto_updated_one)
+                } else {
+                    context.stringResource(MR.strings.ml_g4_extension_auto_updated_many, names.size)
+                },
+            )
             if (!securityPreferences.hideNotificationContent.get()) {
                 val text = names.joinToString(", ")
                 setContentText(text)

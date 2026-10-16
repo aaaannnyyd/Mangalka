@@ -112,7 +112,7 @@ class SettingsSearchScreen : Screen() {
                         if (remember { navigator.canPop }) {
                             InkGlassIconButton(
                                 imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
-                                contentDescription = "Назад",
+                                contentDescription = stringResource(MR.strings.ml_g2_back),
                                 onClick = navigator::pop,
                             )
                         }
@@ -142,7 +142,7 @@ class SettingsSearchScreen : Screen() {
                         if (textFieldState.text.isNotEmpty()) {
                             InkGlassIconButton(
                                 imageVector = Icons.Outlined.Close,
-                                contentDescription = "Очистить поиск",
+                                contentDescription = stringResource(MR.strings.ml_g2_clear_search),
                                 onClick = { textFieldState.clearText() },
                             )
                         }
@@ -230,8 +230,8 @@ private fun SearchResult(
             it == null -> {}
             it.isEmpty() -> {
                 InkEmptyState(
-                    title = "Ничего не найдено",
-                    message = "Попробуйте другой запрос в настройках.",
+                    title = stringResource(MR.strings.ml_g2_settings_nothing_found),
+                    message = stringResource(MR.strings.ml_g2_settings_try_other_query),
                     modifier = Modifier.padding(contentPadding).padding(InkGlassTokens.ScreenHorizontal),
                 )
             }

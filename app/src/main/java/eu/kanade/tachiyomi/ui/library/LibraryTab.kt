@@ -118,8 +118,8 @@ data object LibraryTab : Tab {
                 containerColor = Color.Transparent,
                 topBar = { scrollBehavior ->
                     val title = state.getToolbarTitle(
-                        defaultTitle = "Библиотека",
-                        defaultCategoryTitle = "По умолчанию",
+                        defaultTitle = stringResource(MR.strings.label_library),
+                        defaultCategoryTitle = stringResource(MR.strings.label_default),
                         page = state.coercedActiveCategoryIndex,
                     )
                     LibraryToolbar(
@@ -175,14 +175,13 @@ data object LibraryTab : Tab {
                                 .padding(contentPadding)
                                 .fillMaxWidth()
                                 .padding(top = InkGlassTokens.Space48),
-                            label = "Загружаем библиотеку",
+                            label = stringResource(MR.strings.ml_g3_library_loading),
                         )
                     }
                     state.searchQuery.isNullOrEmpty() && !state.hasActiveFilters && state.isLibraryEmpty -> {
                         InkEmptyState(
-                            title = "Библиотека пока пуста",
-                            message = "Добавляйте понравившиеся серии из каталога — они появятся здесь " +
-                                "без лишних карточек вокруг обложек.",
+                            title = stringResource(MR.strings.ml_g3_library_empty_title),
+                            message = stringResource(MR.strings.ml_g3_library_empty_message),
                             modifier = Modifier
                                 .padding(contentPadding)
                                 .padding(

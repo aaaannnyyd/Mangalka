@@ -47,11 +47,11 @@ fun SourcesScreen(
                 .fillMaxWidth()
                 .padding(contentPadding)
                 .padding(top = InkGlassTokens.Space48),
-            label = "Загружаем источники",
+            label = stringResource(MR.strings.ml_g4_sources_loading),
         )
         state.isEmpty -> InkEmptyState(
-            title = "Источники не найдены",
-            message = "Установите расширение или включите нужные источники в настройках каталога.",
+            title = stringResource(MR.strings.ml_g4_sources_empty_title),
+            message = stringResource(MR.strings.ml_g4_sources_empty_message),
             modifier = Modifier
                 .padding(contentPadding)
                 .padding(horizontal = InkGlassTokens.ScreenHorizontal, vertical = InkGlassTokens.Space32),
@@ -105,8 +105,9 @@ private fun SourceHeader(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
+    val otherLabel = stringResource(MR.strings.ml_g4_sources_other)
     val displayLanguage = LocaleHelper.getSourceDisplayName(language, context).let {
-        if (it.equals("Other", ignoreCase = true)) "Другие" else it
+        if (it.equals("Other", ignoreCase = true)) otherLabel else it
     }
     Text(
         text = displayLanguage.uppercase(),
@@ -137,7 +138,7 @@ private fun SourceItem(
         action = {
             if (source.supportsLatest) {
                 InkGlassChip(
-                    label = "Новинки",
+                    label = stringResource(MR.strings.ml_g4_sources_latest),
                     selected = false,
                     onClick = { onClickItem(source, Listing.Latest) },
                 )

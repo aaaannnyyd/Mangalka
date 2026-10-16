@@ -1,5 +1,6 @@
 package eu.kanade.tachiyomi.ui.today
 
+import android.content.Context
 import android.text.format.DateUtils
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Home
@@ -29,10 +30,13 @@ import eu.kanade.tachiyomi.ui.main.MainActivity
 import eu.kanade.tachiyomi.ui.manga.MangaScreen
 import eu.kanade.tachiyomi.ui.reader.ReaderActivity
 import eu.kanade.tachiyomi.ui.updates.UpdatesTab
+import tachiyomi.core.common.i18n.stringResource
 import tachiyomi.domain.history.model.HistoryWithRelations
 import tachiyomi.domain.manga.model.asMangaCover
 import tachiyomi.domain.today.model.ContinueReading
 import tachiyomi.domain.updates.model.UpdatesWithRelations
+import tachiyomi.i18n.MR
+import tachiyomi.presentation.core.i18n.stringResource
 
 data object TodayTab : Tab {
 
@@ -40,7 +44,7 @@ data object TodayTab : Tab {
         @Composable
         get() = TabOptions(
             index = 0u,
-            title = "Сегодня",
+            title = stringResource(MR.strings.relative_time_today),
             icon = rememberVectorPainter(Icons.Outlined.Home),
         )
 
@@ -60,6 +64,7 @@ data object TodayTab : Tab {
                 isLoading = state.isLoading,
                 hasError = state.hasError,
                 hero = data?.continueReading?.toHero(
+                    context = context,
                     totalPages = state.totalPages,
                     bookmarkOverride = state.bookmarkOverride,
                 ),
@@ -80,7 +85,7 @@ data object TodayTab : Tab {
                 }.take(10).map(UpdatesWithRelations::toTodayItem),
                 history = data?.history.orEmpty().distinctBy {
                     it.mangaId
-                }.take(10).map(HistoryWithRelations::toTodayItem),
+                }.take(10).map { it.toTodayItem(context) },
             ),
             onSearch = { navigator.push(GlobalSearchScreen()) },
             onReadHero = { mangaId, chapterId ->
@@ -105,6 +110,7 @@ data object TodayTab : Tab {
 }
 
 private fun ContinueReading.toHero(
+    context: Context,
     totalPages: Int?,
     bookmarkOverride: Boolean?,
 ): TodayHeroUiModel {
@@ -120,7 +126,7 @@ private fun ContinueReading.toHero(
         mangaId = manga.id,
         chapterId = chapter.id,
         title = manga.title,
-        chapterLabel = chapter.name.ifBlank { chapter.chapterNumber.toChapterLabel() },
+        chapterLabel = chapter.name.ifBlank { chapter.chapterNumber.toChapterLabel(context) },
         currentPage = currentPage,
         totalPages = totalPages,
         progress = progress,
@@ -139,18 +145,18 @@ private fun UpdatesWithRelations.toTodayItem() = TodayUpdateUiModel(
     coverData = coverData,
 )
 
-private fun HistoryWithRelations.toTodayItem() = TodayUpdateUiModel(
+private fun HistoryWithRelations.toTodayItem(context: Context) = TodayUpdateUiModel(
     mangaId = mangaId,
     chapterId = chapterId,
     title = title,
-    chapterLabel = chapterNumber.toChapterLabel(),
+    chapterLabel = chapterNumber.toChapterLabel(context),
     relativeTime = readAt?.let { relativeTime(it.time) }.orEmpty(),
     coverData = coverData,
 )
 
-private fun Double.toChapterLabel(): String {
+private fun Double.toChapterLabel(context: Context): String {
     val value = if (this % 1.0 == 0.0) toLong().toString() else toString()
-    return "Глава $value"
+    return context.stringResource(MR.strings.display_mode_chapter, value)
 }
 
 private fun relativeTime(timestamp: Long): String = DateUtils.getRelativeTimeSpanString(

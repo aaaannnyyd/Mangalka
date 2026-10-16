@@ -61,6 +61,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import tachiyomi.i18n.MR
+import tachiyomi.presentation.core.i18n.stringResource
 
 /** Central visual contract for InkFlow's Premium Dark Manga Liquid Glass language. */
 object InkGlassTokens {
@@ -783,7 +785,10 @@ fun InkSectionHeader(title: String, modifier: Modifier = Modifier, trailing: (@C
 }
 
 @Composable
-fun InkLoadingState(modifier: Modifier = Modifier, label: String = "Загружаем вашу мангу") {
+fun InkLoadingState(
+    modifier: Modifier = Modifier,
+    label: String = stringResource(MR.strings.ml_g2_loading_your_manga),
+) {
     val transition = rememberInfiniteTransition(label = "inkLoading")
     val alpha by transition.animateFloat(
         0.28f,
@@ -840,7 +845,7 @@ fun InkErrorState(
     message: String,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
-    retryLabel: String = "Повторить",
+    retryLabel: String = stringResource(MR.strings.action_retry),
 ) {
     InkGlassSurface(
         modifier = modifier,

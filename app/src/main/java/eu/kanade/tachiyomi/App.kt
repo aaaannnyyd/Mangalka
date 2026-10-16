@@ -127,7 +127,11 @@ class App : Application(), DefaultLifecycleObserver, SingletonImageLoader.Factor
         }
 
         setupNotificationChannels()
-        ExtensionAutoUpdateJob.setupTask(this)
+        // WorkManager is only initialized in the main process; the crash screen runs in :error_handler.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P || getProcessName() == packageName) {
+            runCatching { ExtensionAutoUpdateJob.setupTask(this) }
+                .onFailure { logcat(LogPriority.ERROR, it) { "Extension auto-update not scheduled" } }
+        }
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
 

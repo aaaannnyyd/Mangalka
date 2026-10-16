@@ -8,11 +8,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.InkGlassButton
 import tachiyomi.presentation.core.components.InkGlassLevel
 import tachiyomi.presentation.core.components.InkGlassSurface
 import tachiyomi.presentation.core.components.InkGlassTokens
 import tachiyomi.presentation.core.components.InkTypography
+import tachiyomi.presentation.core.i18n.stringResource
 
 internal class GuidesStep(
     private val onRestoreBackup: () -> Unit,
@@ -24,12 +26,12 @@ internal class GuidesStep(
     override fun Content() {
         Column(verticalArrangement = Arrangement.spacedBy(InkGlassTokens.Space16)) {
             Text(
-                "Всё готово",
+                stringResource(MR.strings.ml_g1_guides_ready),
                 style = InkTypography.Title,
                 color = InkGlassTokens.TextPrimary,
             )
             Text(
-                "Можно начать с каталога или восстановить прежнюю библиотеку из резервной копии.",
+                stringResource(MR.strings.ml_g1_guides_intro),
                 style = InkTypography.Body,
                 color = InkGlassTokens.TextSecondary,
             )
@@ -41,29 +43,29 @@ internal class GuidesStep(
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(InkGlassTokens.Space8)) {
                     Text(
-                        "1 · Откройте «Каталог» и выберите источник",
+                        stringResource(MR.strings.ml_g1_guides_step_browse),
                         style = InkTypography.Body,
                         color = InkGlassTokens.TextPrimary,
                     )
                     Text(
-                        "2 · Добавьте мангу в библиотеку",
+                        stringResource(MR.strings.ml_g1_guides_step_library),
                         style = InkTypography.Body,
                         color = InkGlassTokens.TextPrimary,
                     )
                     Text(
-                        "3 · Читайте главы; комментарии можно отключить в ридере",
+                        stringResource(MR.strings.ml_g1_guides_step_read),
                         style = InkTypography.Body,
                         color = InkGlassTokens.TextPrimary,
                     )
                 }
             }
             InkGlassButton(
-                label = "Восстановить резервную копию",
+                label = stringResource(MR.strings.ml_g1_guides_restore_backup),
                 modifier = Modifier.fillMaxWidth(),
                 onClick = onRestoreBackup,
             )
             Text(
-                "Эти действия доступны и позже в настройках.",
+                stringResource(MR.strings.ml_g1_guides_later_hint),
                 style = InkTypography.BodySmall,
                 color = InkGlassTokens.TextTertiary,
             )

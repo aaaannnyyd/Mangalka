@@ -123,7 +123,7 @@ internal fun ColumnScope.GeneralPage(viewModel: ReaderSettingsViewModel) {
 
     val chapterCommentsEnabled by viewModel.preferences.showChapterComments.collectAsState()
     CheckboxItem(
-        label = "Комментарии между главами",
+        label = stringResource(MR.strings.ml_g4_reader_comments_between_chapters),
         checked = chapterCommentsEnabled,
         onClick = {
             val enabled = !chapterCommentsEnabled
