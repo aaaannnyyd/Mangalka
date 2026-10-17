@@ -13,6 +13,7 @@ import mangalka.comments.HttpText
 import mangalka.comments.adapter.AutoCommentAdapter
 import mangalka.comments.adapter.ComixCommentAdapter
 import mangalka.comments.adapter.HenChanCommentAdapter
+import mangalka.comments.adapter.MangaDexCommentAdapter
 import mangalka.comments.adapter.MangaLibCommentAdapter
 import mangalka.comments.adapter.MangaShiCommentAdapter
 import mangalka.comments.adapter.ReMangaCommentAdapter
@@ -70,6 +71,7 @@ object CommentEngineDefaults {
             ReMangaCommentAdapter(),
             MangaShiCommentAdapter(),
             HenChanCommentAdapter(),
+            MangaDexCommentAdapter(),
             // сюда добавляются новые кастомные адаптеры
         )
     }
