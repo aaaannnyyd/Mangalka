@@ -26,7 +26,6 @@ import eu.kanade.presentation.more.settings.widget.TextPreferenceWidget
 import eu.kanade.presentation.util.LocalBackPress
 import eu.kanade.presentation.util.Screen
 import eu.kanade.tachiyomi.BuildConfig
-import eu.kanade.tachiyomi.data.updater.UPDATE_CHANNEL
 import eu.kanade.tachiyomi.ui.more.NewUpdateScreen
 import eu.kanade.tachiyomi.util.lang.toDateTimestampString
 import eu.kanade.tachiyomi.util.system.copyToClipboard
@@ -157,14 +156,6 @@ object AboutScreen : Screen() {
                         TextPreferenceWidget(
                             title = stringResource(MR.strings.author),
                             subtitle = "anykebobd",
-                        )
-                    }
-
-                    item {
-                        TextPreferenceWidget(
-                            title = stringResource(MR.strings.ml_g4_about_update_channel),
-                            subtitle = "t.me/$UPDATE_CHANNEL",
-                            onPreferenceClick = { uriHandler.openUri("https://t.me/$UPDATE_CHANNEL") },
                         )
                     }
 

@@ -1207,7 +1207,6 @@
     <string name="ml_g4_track_finished">Завершено</string>
     <string name="ml_g4_track_not_connected">Не подключено</string>
     <string name="ml_g4_about_checking">ПРОВЕРКА</string>
-    <string name="ml_g4_about_update_channel">Канал обновлений</string>
     <string name="ml_g4_about_source_code">Исходный код</string>
     <string name="ml_g4_about_upstream">Исходный проект</string>
     <string name="ml_g4_about_upstream_summary">Форк Mihon · Apache-2.0</string>

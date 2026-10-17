@@ -1349,7 +1349,6 @@
     <string name="ml_g4_track_finished">Finished</string>
     <string name="ml_g4_track_not_connected">Not connected</string>
     <string name="ml_g4_about_checking">CHECKING</string>
-    <string name="ml_g4_about_update_channel">Update channel</string>
     <string name="ml_g4_about_source_code">Source code</string>
     <string name="ml_g4_about_upstream">Upstream project</string>
     <string name="ml_g4_about_upstream_summary">Mihon fork · Apache-2.0</string>

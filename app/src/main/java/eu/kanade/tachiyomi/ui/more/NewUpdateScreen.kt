@@ -1,13 +1,9 @@
 package eu.kanade.tachiyomi.ui.more
 
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -41,10 +37,9 @@ class NewUpdateScreen(
             changelogInfo = state.changelogInfo,
             onOpenInBrowser = { context.openInBrowser(releaseLink) },
             onAcceptUpdate = {
-                // Telegram posts carry the APK as an attachment that cannot be fetched without a
-                // bot token, so without a direct mirror link the post is opened in Telegram.
+                // Without an APK asset for this device the release page is opened instead.
                 when {
-                    !downloadLink.isDirectApk() -> context.openTelegramPost(downloadLink)
+                    !downloadLink.isDirectApk() -> context.openInBrowser(releaseLink)
                     state.stage == NewUpdateScreenModel.Stage.Available ||
                         state.stage == NewUpdateScreenModel.Stage.Failed -> viewModel.startDownload()
                     state.stage == NewUpdateScreenModel.Stage.Downloaded -> viewModel.installUpdate()
@@ -57,18 +52,3 @@ class NewUpdateScreen(
 }
 
 private fun String.isDirectApk(): Boolean = substringBefore('?').endsWith(".apk", ignoreCase = true)
-
-private val TELEGRAM_POST = Regex("""^https?://t\.me/([A-Za-z0-9_]+)/(\d+)""")
-
-/** Opens a `https://t.me/<channel>/<post>` link in the Telegram app, falling back to the browser. */
-private fun Context.openTelegramPost(url: String) {
-    val match = TELEGRAM_POST.find(url) ?: return openInBrowser(url)
-    val (channel, post) = match.destructured
-    val intent = Intent(Intent.ACTION_VIEW, "tg://resolve?domain=$channel&post=$post".toUri())
-        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    try {
-        startActivity(intent)
-    } catch (_: ActivityNotFoundException) {
-        openInBrowser(url)
-    }
-}

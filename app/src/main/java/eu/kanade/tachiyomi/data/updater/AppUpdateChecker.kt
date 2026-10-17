@@ -25,7 +25,7 @@ class AppUpdateChecker(
                     isNightlyBuildType,
                     BuildConfig.COMMIT_COUNT.toInt(),
                     BuildConfig.VERSION_NAME,
-                    UPDATE_CHANNEL,
+                    UPDATE_REPOSITORY,
                     forceCheck,
                 ),
             )
@@ -35,5 +35,5 @@ class AppUpdateChecker(
     }
 }
 
-/** Public Telegram channel with Mangalka release posts (`#release mangalka ...`). */
-const val UPDATE_CHANNEL = "unisonomreleases"
+/** GitHub repository whose releases carry the Mangalka APKs. */
+const val UPDATE_REPOSITORY = "aaaannnyyd/Mangalka"
